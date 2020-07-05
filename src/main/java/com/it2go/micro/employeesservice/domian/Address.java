@@ -26,7 +26,7 @@ public class Address {
     @Size(min = 3, max = 100)
     private String streetTwo;
 
-    @Size(min = 5, max = 5)
+    @Size(min = 5, max = 10)
     @NotNull
     private String zipCode;
 

@@ -24,23 +24,20 @@ public class DocumentEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "OWNER_ID", referencedColumnName = "PUBLIC_ID", nullable = false)
-    @NotNull
     @JsonIgnore
     private EmployeeEntity owner;
 
     @Basic
-    @Column(name = "NAME", nullable = false)
-    @NotNull
+    @Column(name = "NAME", length = 100,nullable = false)
     private String name;
 
     @Basic
-    @Column(name = "TYPE", nullable = false)
+    @Column(name = "TYPE", length = 20, nullable = false)
     @NotNull
     private String contentType;
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
     //@Column(name = "CONTENT", columnDefinition="BLOB NOT NULL")
-    //@NotNull
     private byte[] content;
 }

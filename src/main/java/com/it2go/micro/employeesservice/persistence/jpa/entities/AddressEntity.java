@@ -15,6 +15,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "ADDRESS")
 public class AddressEntity implements Serializable {
 
     @Id
@@ -25,26 +26,26 @@ public class AddressEntity implements Serializable {
     private UUID publicId;
 
     @Basic
-    @Column(name = "STREET_ONE", nullable = false)
+    @Column(name = "STREET_ONE", length = 100,nullable = false)
     private String streetOne;
 
     @Basic
-    @Column(name = "BUILDING_NR", nullable = false)
+    @Column(name = "BUILDING_NR", length = 5, nullable = false)
     private String buildingNr;
 
     @Basic
-    @Column(name = "STREET_TWO", nullable = true)
+    @Column(name = "STREET_TWO", length = 100,nullable = true)
     private String streetTwo;
 
     @Basic
-    @Column(name = "ZIP_CODE", nullable = false)
+    @Column(name = "ZIP_CODE", length = 10, nullable = false)
     private String zipCode;
 
     @Basic
-    @Column(name = "CITY", nullable = false)
+    @Column(name = "CITY", length = 100, nullable = false)
     private String city;
 
     @Basic
-    @Column(name = "COUNTRY_CODE", nullable = false)
+    @Column(name = "COUNTRY_CODE", length = 3, nullable = false)
     private String countryCode;
 }

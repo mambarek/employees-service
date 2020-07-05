@@ -16,6 +16,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "EMPLOYEE")
 public class EmployeeEntity implements Serializable {
 
     @Id
@@ -58,14 +59,14 @@ public class EmployeeEntity implements Serializable {
     private boolean traveling;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true, fetch = FetchType.LAZY)
+    // documents must be moved to another service, not loading as lazy
     private List<DocumentEntity> documents;
 
-    public List<DocumentEntity> addDocument(DocumentEntity documentEntity){
+    public void addDocument(DocumentEntity documentEntity){
         Objects.requireNonNull(documentEntity);
 
         documentEntity.setOwner(this);
         if(this.documents == null) this.documents = new ArrayList<>();
         this.documents.add(documentEntity);
-        return this.documents;
     }
 }

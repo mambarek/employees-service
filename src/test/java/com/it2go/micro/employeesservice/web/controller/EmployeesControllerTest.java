@@ -2,9 +2,12 @@ package com.it2go.micro.employeesservice.web.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.it2go.micro.employeesservice.domian.Address;
 import com.it2go.micro.employeesservice.domian.Document;
 import com.it2go.micro.employeesservice.domian.Employee;
+import com.it2go.micro.employeesservice.domian.PersonData;
 import com.it2go.micro.employeesservice.mapper.EmployeeMapper;
+import com.it2go.micro.employeesservice.masterdata.Gender;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.services.EmployeesService;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -48,8 +52,24 @@ class EmployeesControllerTest {
                 .contentType("application/pdf")
                 .build();
 
+        PersonData personData = PersonData.builder()
+                .birthDate(LocalDate.of(1970,1,6))
+                .email("mbarek@it-2go.com")
+                .firstName("Ali")
+                .lastName("Mbarek")
+                .gender(Gender.MALE)
+                .address(Address.builder()
+                        .streetOne("Rudolf-Breitscheid-Str.")
+                        .buildingNr("49")
+                        .city("Kaiserslautern")
+                        .countryCode("DE")
+                        .zipCode("67655")
+                        .build())
+                .build();
+
         Employee employee = Employee.builder()
                 .publicId(UUID.randomUUID())
+                .data(personData)
                 .salary(2000.00)
                 .traveling(true)
                 .weekendWork(false)
