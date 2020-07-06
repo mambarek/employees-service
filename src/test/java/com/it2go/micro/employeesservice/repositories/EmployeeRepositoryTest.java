@@ -31,6 +31,8 @@ class EmployeeRepositoryTest {
 
     @Test
     @Transactional
+    // @Transactional ensures that all of the method calls in that test method happens within same boundary.
+    // Problem was LazyInitializationException: failed to lazily initialize a collection of role "documents"
     void testCreate(){
         DocumentEntity doc1 = DocumentEntity.builder()
                 .name("My life")
