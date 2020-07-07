@@ -1,11 +1,15 @@
 package com.it2go.micro.employeesservice.mapper;
 
+import com.it2go.micro.employeesservice.domian.Document;
 import com.it2go.micro.employeesservice.domian.Employee;
+import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+
+import java.util.List;
 
 @Mapper
 public interface EmployeeMapper{
@@ -36,9 +40,13 @@ public interface EmployeeMapper{
     @Mapping(target = "address", source = "data.address")
     EmployeeEntity simpleUpdateEmployee(@MappingTarget EmployeeEntity employeeEntity, Employee employee);
     default EmployeeEntity updateEmployeeEntity(@MappingTarget EmployeeEntity employeeEntity, Employee employee){
+
+        // update all direct attributes
         EmployeeEntity updateEmployee = simpleUpdateEmployee(employeeEntity, employee);
         updateEmployee.getDocuments().forEach(documentEntity -> documentEntity.setOwner(updateEmployee));
 
         return updateEmployee;
     }
+
+    List<DocumentEntity> updateDocumentEntityList(@MappingTarget List<DocumentEntity> documentEntities, List<Document> documents);
 }

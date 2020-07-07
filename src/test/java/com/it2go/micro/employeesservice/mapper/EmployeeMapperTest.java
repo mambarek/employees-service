@@ -43,13 +43,17 @@ class EmployeeMapperTest {
     void testUpdateEmployeeEntity(){
         EmployeeEntity employeeEntity = EmployeesProducer.createEmployeeEntity();
         System.out.println(employeeEntity);
+
         Employee employee = EmployeesProducer.createEmployee();
         System.out.println(employee);
 
         EmployeeEntity updatedEmployeeEntity = employeeMapper.updateEmployeeEntity(employeeEntity, employee);
         System.out.println(updatedEmployeeEntity);
+
         assertEquals(employee.getData().getFirstName(), updatedEmployeeEntity.getFirstName());
         assertEquals(employee.getPublicId(), updatedEmployeeEntity.getPublicId());
+        assertNotNull(updatedEmployeeEntity.getId());
+        assertNotNull(updatedEmployeeEntity.getAddress().getId());
     }
 
 
