@@ -16,6 +16,7 @@ import java.util.UUID;
 @Builder
 public class User {
 
+    @NotNull
     private UUID publicId;
 
     @NotNull

@@ -10,6 +10,7 @@ import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
+import com.it2go.micro.employeesservice.services.EmployeesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -26,12 +27,12 @@ public class EmployeeLoader implements CommandLineRunner {
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
 
+    private final EmployeesService employeesService;
+
     @Override
     public void run(String... args) throws Exception {
-        EmployeeEntity employeeEntity = employeeMapper.employeeToEmployeeEntity(createEmployee());
-
-        employeeRepository.save(employeeEntity);
-        System.out.println(employeeEntity);
+        Employee employee = employeesService.saveNewEmployee(createEmployee());
+        System.out.println(employee);
     }
 
     public static Employee createEmployee(){

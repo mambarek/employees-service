@@ -22,7 +22,7 @@ public interface EmployeeMapper{
     @Mapping(source = "address", target = "data.address")
     Employee employeeEntityToEmployee(EmployeeEntity employeeEntity);
 
-    @InheritInverseConfiguration
+    @InheritInverseConfiguration(name = "employeeEntityToEmployee")
     EmployeeEntity simpleEmployeeToEmployeeEntity(Employee employee);
 
     default EmployeeEntity employeeToEmployeeEntity(Employee employee){

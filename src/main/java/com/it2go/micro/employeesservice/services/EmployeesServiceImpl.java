@@ -7,6 +7,7 @@ import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRep
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +26,8 @@ public class EmployeesServiceImpl implements EmployeesService{
 
     @Override
     public Employee saveNewEmployee(Employee employee) {
+        employee.setCreatedAt(OffsetDateTime.now());
+        employee.setCreatedBy(UUID.randomUUID()); // TODO to be changed with user publicId
         EmployeeEntity employeeEntity = employeeRepository.save(employeeMapper.employeeToEmployeeEntity(employee));
 
         return employeeMapper.employeeEntityToEmployee(employeeEntity);
@@ -32,6 +35,8 @@ public class EmployeesServiceImpl implements EmployeesService{
 
     @Override
     public Employee updateEmployee(Employee employee){
+        employee.setUpdatedAt(OffsetDateTime.now());
+        employee.setUpdatedBy(UUID.randomUUID()); // TODO to be changed with user publicId
         EmployeeEntity byPublicId = employeeRepository.findByPublicId(employee.getPublicId())
                 .orElseThrow(EntityNotFoundException::new);
 

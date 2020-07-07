@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,6 +58,22 @@ public class EmployeeEntity implements Serializable {
 
     @Column(name = "TRAVELING")
     private boolean traveling;
+
+    @Basic
+    @Column(name = "CREATED_AT", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime createdAt;
+
+    @Basic
+    @Column(name = "UPDATED_AT", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    private OffsetDateTime updatedAt;
+
+    @Basic
+    @Column(name = "CREATED_BY")
+    private UUID createdBy;
+
+    @Basic
+    @Column(name = "UPDATED_BY")
+    private UUID updatedBy;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true, fetch = FetchType.LAZY)
     // documents must be moved to another service, not loading as lazy
