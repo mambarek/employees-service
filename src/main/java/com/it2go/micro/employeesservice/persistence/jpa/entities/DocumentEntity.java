@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.UUID;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
@@ -21,6 +22,9 @@ public class DocumentEntity implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(name = "PUBLIC_ID", unique = true, nullable = false)
+    private UUID publicId;
 
     @ManyToOne
     @JoinColumn(name = "OWNER_ID", referencedColumnName = "PUBLIC_ID", nullable = false)

@@ -21,11 +21,13 @@ public class EmployeeLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         DocumentEntity doc1 = DocumentEntity.builder()
+                .publicId(UUID.randomUUID())
                 .contentType("test")
                 .name("file 1")
                 .build();
 
         DocumentEntity doc2 = DocumentEntity.builder()
+                .publicId(UUID.randomUUID())
                 .contentType("test")
                 .name("file 2")
                 .build();
@@ -57,5 +59,6 @@ public class EmployeeLoader implements CommandLineRunner {
         employeeEntity.addDocument(doc2);
 
         employeeRepository.save(employeeEntity);
+        System.out.println(employeeEntity);
     }
 }

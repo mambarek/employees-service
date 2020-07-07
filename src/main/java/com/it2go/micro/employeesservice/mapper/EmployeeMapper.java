@@ -5,6 +5,7 @@ import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper
 public interface EmployeeMapper{
@@ -27,4 +28,17 @@ public interface EmployeeMapper{
         return employeeEntity;
     };
 
+    @Mapping(target = "firstName", source = "data.firstName")
+    @Mapping(target = "lastName", source = "data.lastName")
+    @Mapping(target = "birthDate", source = "data.birthDate")
+    @Mapping(target = "gender", source = "data.gender")
+    @Mapping(target = "email", source = "data.email")
+    @Mapping(target = "address", source = "data.address")
+    EmployeeEntity simpleUpdateEmployee(@MappingTarget EmployeeEntity employeeEntity, Employee employee);
+    default EmployeeEntity updateEmployeeEntity(@MappingTarget EmployeeEntity employeeEntity, Employee employee){
+        EmployeeEntity updateEmployee = simpleUpdateEmployee(employeeEntity, employee);
+        updateEmployee.getDocuments().forEach(documentEntity -> documentEntity.setOwner(updateEmployee));
+
+        return updateEmployee;
+    }
 }

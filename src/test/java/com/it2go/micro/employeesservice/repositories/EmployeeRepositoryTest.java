@@ -6,6 +6,8 @@ import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
+import com.it2go.micro.employeesservice.services.EntityNotFoundException;
+import com.it2go.micro.employeesservice.util.EmployeesProducer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,60 +36,35 @@ class EmployeeRepositoryTest {
     // @Transactional ensures that all of the method calls in that test method happens within same boundary.
     // Problem was LazyInitializationException: failed to lazily initialize a collection of role "documents"
     void testCreate(){
-        DocumentEntity doc1 = DocumentEntity.builder()
-                .name("My life")
-                .contentType("application/pdf")
-                .build();
 
-        DocumentEntity doc2 = DocumentEntity.builder()
-                .name("The Universe")
-                .contentType("application/pdf")
-                .build();
-
-        AddressEntity addressEntity = AddressEntity.builder()
-                .buildingNr("55")
-                .city("Mannheim")
-                .countryCode("DE")
-                .publicId(UUID.randomUUID())
-                .streetOne("Bahnhofstr.")
-                .zipCode("12345")
-                .build();
-
-        EmployeeEntity employeeEntity = EmployeeEntity.builder()
-                .publicId(UUID.randomUUID())
-                .firstName("Martin")
-                .lastName("Fowler")
-                .birthDate(LocalDate.parse("1975-05-10"))
-                .salary(2000.0)
-                .traveling(true)
-                .weekendWork(false)
-                .email("martin.fowler@google.com")
-                .gender("MALE")
-                .documents(new ArrayList<>())
-                .address(addressEntity)
-                .build();
-
-        employeeEntity.addDocument(doc1);
-        employeeEntity.addDocument(doc2);
-
+        EmployeeEntity employeeEntity = EmployeesProducer.createEmployeeEntity();
         EmployeeEntity savedEmployee = employeeRepository.save(employeeEntity);
 
         Optional<EmployeeEntity> byId = employeeRepository.findById(savedEmployee.getId());
-        System.out.println(" >>>   ById is executed: " );
         byId.ifPresent(entity -> {
             List<DocumentEntity> documents = entity.getDocuments();
             Employee employee = employeeMapper.employeeEntityToEmployee(entity);
             System.out.println(employee);
         });
 
-
-        EmployeeEntity byPublicId = employeeRepository.findByPublicId(employeeEntity.getPublicId());
-
         assertNotNull(savedEmployee.getId());
         assertEquals(employeeEntity.getPublicId(), savedEmployee.getPublicId());
-        assertEquals(savedEmployee.getId(), byPublicId.getId());
-
-        System.out.println("Hier warten ");
     }
 
+    @Test
+    @Transactional
+    void testUpdate(){
+        Employee employee = EmployeesProducer.createEmployee();
+        EmployeeEntity employeeEntity = employeeMapper.employeeToEmployeeEntity(employee);
+        EmployeeEntity savedEmployee = employeeRepository.save(employeeEntity);
+
+        EmployeeEntity loadedEntity = employeeRepository.findByPublicId(employeeEntity.getPublicId())
+                .orElseThrow(EntityNotFoundException::new);
+
+        Employee employee2 = EmployeesProducer.createEmployee2();
+        EmployeeEntity updateEmployeeEntity = employeeMapper.updateEmployeeEntity(loadedEntity, employee2);
+
+        EmployeeEntity save = employeeRepository.save(updateEmployeeEntity);
+        System.out.println(save);
+    }
 }

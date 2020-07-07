@@ -22,7 +22,7 @@ public class AddressEntity implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "PUBLIC_ID")
+    @Column(name = "PUBLIC_ID", unique = true, nullable = false)
     private UUID publicId;
 
     @Basic

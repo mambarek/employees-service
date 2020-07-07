@@ -4,11 +4,14 @@ import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.services.EmployeesService;
 import com.it2go.micro.employeesservice.services.EmployeesServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.UUID;
 
@@ -20,17 +23,29 @@ public class EmployeesController {
     private final EmployeesService employeesService;
 
     @PostMapping
-    public ResponseEntity<Void> saveNewEmployee(@RequestBody @Validated Employee employee){
-        employeesService.saveNewEmployee(employee);
+    public ResponseEntity<Employee> saveNewEmployee(@RequestBody @Valid Employee employee){
+        Employee savedEmployee = employeesService.saveNewEmployee(employee);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{publicId}")
                 .buildAndExpand(employee.getPublicId()).toUri();
 
-        return ResponseEntity.created(uri).build();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setLocation(uri);
+
+        return new ResponseEntity<>(savedEmployee, responseHeaders, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{publicId}")
+    public ResponseEntity<Employee> updateEmploy(@RequestBody @Valid Employee employee){
+        Employee updateEmployee = employeesService.updateEmployee(employee);
+
+        return ResponseEntity.ok(updateEmployee);
     }
 
     @GetMapping("/{publicId}")
-    public Employee findEmployeeByPublicId(@PathVariable("publicId") UUID publicId) {
-        return employeesService.findEmployeeByPublicId(publicId);
+    public ResponseEntity<Employee> findEmployeeByPublicId(@PathVariable("publicId") UUID publicId) {
+        Employee employeeByPublicId = employeesService.findEmployeeByPublicId(publicId);
+
+        return new ResponseEntity<>(employeeByPublicId, HttpStatus.OK);
     }
 }
