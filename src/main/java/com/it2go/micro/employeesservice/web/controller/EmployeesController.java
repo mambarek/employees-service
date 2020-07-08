@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.UUID;
 
@@ -43,7 +44,7 @@ public class EmployeesController {
     }
 
     @GetMapping("/{publicId}")
-    public ResponseEntity<Employee> findEmployeeByPublicId(@PathVariable("publicId") UUID publicId) {
+    public ResponseEntity<Employee> findEmployeeByPublicId(@PathVariable("publicId") @NotNull UUID publicId) {
         Employee employeeByPublicId = employeesService.findEmployeeByPublicId(publicId);
 
         return new ResponseEntity<>(employeeByPublicId, HttpStatus.OK);
