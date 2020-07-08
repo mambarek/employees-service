@@ -10,6 +10,7 @@ import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -94,6 +95,8 @@ public class EmployeesProducer {
 
         Employee employee = Employee.builder()
                 .publicId(UUID.randomUUID())
+                .createdAt(OffsetDateTime.now())
+                .createdBy(UUID.randomUUID())
                 .data(personData)
                 .salary(5000.00)
                 .traveling(true)

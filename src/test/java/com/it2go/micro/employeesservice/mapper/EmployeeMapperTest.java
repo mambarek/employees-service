@@ -1,21 +1,14 @@
 package com.it2go.micro.employeesservice.mapper;
 
-import com.it2go.micro.employeesservice.domian.Address;
-import com.it2go.micro.employeesservice.domian.Document;
 import com.it2go.micro.employeesservice.domian.Employee;
-import com.it2go.micro.employeesservice.domian.PersonData;
-import com.it2go.micro.employeesservice.masterdata.Gender;
-import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity;
-import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.util.EmployeesProducer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.jupiter.api.Assertions.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class EmployeeMapperTest {

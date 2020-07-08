@@ -2,7 +2,6 @@ package com.it2go.micro.employeesservice.repositories;
 
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.mapper.EmployeeMapper;
-import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
@@ -13,14 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class EmployeeRepositoryTest {
