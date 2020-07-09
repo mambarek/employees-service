@@ -4,8 +4,8 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.it2go.micro</groupId>
-        <artifactId>micro-services-bom</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <artifactId>microservices-bom</artifactId>
+        <version>1.1</version>
     </parent>
     <artifactId>employees-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
