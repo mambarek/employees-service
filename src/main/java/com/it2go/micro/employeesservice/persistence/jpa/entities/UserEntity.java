@@ -21,4 +21,7 @@ public class UserEntity {
 
     @Column(name = "PUBLIC_ID", unique = true, nullable = false)
     private UUID publicId;
+
+    private String userName;
+    private String password;
 }
