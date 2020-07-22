@@ -12,4 +12,8 @@
     <name>employees-service</name>
     <description>Employees Microservice</description>
 
+    <scm>
+        <developerConnection>scm:git:https://github.com/mambarek/employees-service.git</developerConnection>
+        <url>https://github.com/mambarek/employees-service.git</url>
+    </scm>
 </project>
