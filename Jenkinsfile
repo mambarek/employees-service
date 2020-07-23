@@ -12,8 +12,9 @@ def sendSuccessMail(){
 def sendErrorMail(error){
     mail to: "mbarek@it-2go.de", bcc: "", cc: "", from: "Jenkins@it-2go.de", replyTo: "",
     subject: "Build  ${env.JOB_NAME} fails",
-    body: """Your Build  ${env.JOB_NAME} #${env.BUILD_NUMBER} fails.
-    ${}error}
+    body: """
+    Your Build  ${env.JOB_NAME} #${env.BUILD_NUMBER} fails.
+    ${error}
     For details check the Job URL: ${env.BUILD_URL}"""
 }
 
@@ -32,6 +33,7 @@ node {
                     try{
                         bat 'mvn ppackage -DskipTests'
                     } catch(error){
+                        currentBuild.result = 'FAILURE'
                         sendErrorMail(error)
                     }
                 }
