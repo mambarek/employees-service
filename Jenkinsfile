@@ -15,7 +15,7 @@ def sendErrorMail(error){
     body: """
     Your Build  ${env.JOB_NAME} #${env.BUILD_NUMBER} fails.
     ${error}
-    For details check the Job URL: ${env.BUILD_URL}"""
+    For details check the Job console: ${env.BUILD_URL}/console"""
 }
 
 node {
