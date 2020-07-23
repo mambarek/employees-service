@@ -19,12 +19,18 @@ node {
 
          stage('Build') {
                 echo "Build  employees-service..."
-                bat 'mvn package -DskipTests'
+                //bat 'mvn package -DskipTests'
+                withMaven(jdk: 'Java11', maven: 'maven-3.6.3') {
+                    bat 'mvn package -DskipTests'
+                }
          }
 
         stage('Test') {
             echo "Test  employees-service..."
-            bat 'mvn test'
+            //bat 'mvn test'
+            withMaven(jdk: 'Java11', maven: 'maven-3.6.3') {
+                bat 'mvn test'
+            }
         }
 
         stage('Notify'){
