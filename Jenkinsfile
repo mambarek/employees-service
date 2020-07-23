@@ -1,5 +1,8 @@
 def branch = 'master'
 def scmUrl = 'https://github.com/mambarek/employees-service.git'
+def sendSuccessMail(){
+    mail bcc: '', body: 'Your Build  ${env.JOB_NAME} #${env.BUILD_NUMBER} is successfuly done.', cc: '', from: '', replyTo: '', subject: 'Build  ${env.JOB_NAME} done', to: 'mbarek@it-2go.de'
+}
 node {
     ansiColor('xterm'){echo "It should launch the build in jenkins"}
     ansiColor('xterm') {
@@ -16,6 +19,11 @@ node {
         stage('Test') {
             echo "Test  employees-service..."
             bat 'mvn test'
+        }
+
+        stage('Notify'){
+            echo "Notify contributer ..."
+            sendSuccessMail()
         }
 
         stage('Cleanup') {
