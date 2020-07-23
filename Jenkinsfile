@@ -35,6 +35,7 @@ node {
                     } catch(error){
                         currentBuild.result = 'FAILURE'
                         sendErrorMail(error)
+                        throw new RuntimeException(error);
                     }
                 }
          }
