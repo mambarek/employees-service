@@ -2,7 +2,7 @@ def branch = 'master'
 def scmUrl = 'https://github.com/mambarek/employees-service.git'
 node {
 
-    ansiColor('xterm') {
+    ansiColor('vga') {
          stage('Checkout') {
                 echo "Checkout employees-service..."
                 git branch: branch, url: scmUrl
@@ -21,7 +21,6 @@ node {
         stage('Cleanup') {
             // Delete workspace when build is done
             cleanWs()
-           //cleanWs disableDeferredWipeout: true, deleteDirs: true
         }
     }
 }
