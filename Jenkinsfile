@@ -2,7 +2,7 @@ def branch = 'master'
 def scmUrl = 'https://github.com/mambarek/employees-service.git'
 
 def sendSuccessMail(){
-    mail to: "mbarek@it-2go.de", bcc: "", cc: "", from: "Jenkins", replyTo: "",
+    mail to: "mbarek@it-2go.de", bcc: "", cc: "", from: "", replyTo: "",
     subject: "Build  ${env.JOB_NAME} done",
     body: "Your Build  ${env.JOB_NAME} #${env.BUILD_NUMBER} is successfuly done."
 }
