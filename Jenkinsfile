@@ -31,10 +31,10 @@ node {
                 withMaven(jdk: javaVersion, maven: mavenVersion) {
                     try{
                     ansiColor('xterm') {
-                        bat 'mvn ppackage -DskipTests'
+                        bat 'mvn package -DskipTests'
                         }
                     } catch(exception){
-                        sendErrorMail("Error occurred while building " + exception.message)
+                        sendErrorMail("Error occurred while building, error: " + exception.message)
                         warnError(exception.message)
                     }
                 }
