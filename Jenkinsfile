@@ -1,8 +1,8 @@
 def branch = 'master'
 def scmUrl = 'https://github.com/mambarek/employees-service.git'
 node {
-    ansiColor('Xterm'){echo "It should launch the build in jenkins"}
-    ansiColor('vga') {
+    ansiColor('xterm'){echo "It should launch the build in jenkins"}
+    ansiColor('xterm') {
          stage('Checkout') {
                 echo "Checkout employees-service..."
                 git branch: branch, url: scmUrl
