@@ -33,9 +33,8 @@ node {
                     try{
                         bat 'mvn ppackage -DskipTests'
                     } catch(error){
-                        currentBuild.result = 'FAILURE'
                         sendErrorMail(error)
-                        throw new RuntimeException(error);
+                        warnError(error)
                     }
                 }
          }
