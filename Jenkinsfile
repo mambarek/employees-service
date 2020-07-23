@@ -1,10 +1,20 @@
 def branch = 'master'
 def scmUrl = 'https://github.com/mambarek/employees-service.git'
+def mavenVersion = 'maven-3.6.3'
+def javaVersion = 'Java11'
 
 def sendSuccessMail(){
     mail to: "mbarek@it-2go.de", bcc: "", cc: "", from: "Jenkins@it-2go.de", replyTo: "",
     subject: "Build  ${env.JOB_NAME} done",
-    body: "Your Build  ${env.JOB_NAME} #${env.BUILD_NUMBER} is successfuly done."
+    body: "Your Build  ${env.JOB_NAME} #${env.BUILD_NUMBER} is successfully done."
+}
+
+def sendErrorMail(error){
+    mail to: "mbarek@it-2go.de", bcc: "", cc: "", from: "Jenkins@it-2go.de", replyTo: "",
+    subject: "Build  ${env.JOB_NAME} fails",
+    body: """Your Build  ${env.JOB_NAME} #${env.BUILD_NUMBER} fails.
+    ${}error}
+    For details check the Job URL: ${env.BUILD_URL}"""
 }
 
 node {
@@ -18,15 +28,19 @@ node {
          stage('Build') {
                 echo "Build  employees-service..."
                 //bat 'mvn package -DskipTests'
-                withMaven(jdk: 'Java11', maven: 'maven-3.6.3') {
-                    bat 'mvn package -DskipTests'
+                withMaven(jdk: javaVersion, maven: mavenVersion) {
+                    try{
+                        bat 'mvn ppackage -DskipTests'
+                    } catch(error){
+                        sendErrorMail(error)
+                    }
                 }
          }
 
         stage('Test') {
             echo "Test  employees-service..."
             //bat 'mvn test'
-            withMaven(jdk: 'Java11', maven: 'maven-3.6.3') {
+            withMaven(jdk: javaVersion, maven: mavenVersion) {
                 bat 'mvn test'
             }
         }
