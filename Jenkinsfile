@@ -15,11 +15,10 @@ def sendErrorMail(error){
     body: """
     Your Build  ${env.JOB_NAME} #${env.BUILD_NUMBER} fails.
     ${error}
-    For details check the Job console: ${env.BUILD_URL}/console"""
+    For details check the Job console: ${env.BUILD_URL}console"""
 }
 
 node {
-    ansiColor('xterm'){echo "It should launch the build in jenkins"}
     ansiColor('xterm') {
          stage('Checkout') {
                 echo "Checkout employees-service..."
@@ -31,9 +30,11 @@ node {
                 //bat 'mvn package -DskipTests'
                 withMaven(jdk: javaVersion, maven: mavenVersion) {
                     try{
+                    ansiColor('xterm') {
                         bat 'mvn ppackage -DskipTests'
+                        }
                     } catch(exception){
-                        sendErrorMail(exception.message)
+                        sendErrorMail("Error occurred while building " + exception.message)
                         warnError(exception.message)
                     }
                 }
