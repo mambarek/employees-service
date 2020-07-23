@@ -32,9 +32,9 @@ node {
                 withMaven(jdk: javaVersion, maven: mavenVersion) {
                     try{
                         bat 'mvn ppackage -DskipTests'
-                    } catch(error){
-                        sendErrorMail(error)
-                        warnError(error)
+                    } catch(exception){
+                        sendErrorMail(exception.message)
+                        warnError(exception.message)
                     }
                 }
          }
