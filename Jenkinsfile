@@ -19,7 +19,7 @@ def sendErrorMail(error){
 }
 
 def runCommand(command){
-    if(isUnix){
+    if(isUnix()){
         sh command
     } else {
         bat command
