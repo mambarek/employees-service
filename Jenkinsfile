@@ -35,10 +35,8 @@ node {
 
          stage('Build') {
             echo "Build  employees-service..."
-            //bat 'mvn package -DskipTests'
             withMaven(jdk: javaVersion, maven: mavenVersion) {
                 try{
-                    //bat 'mvn package -DskipTests'
                     runCommand('mvn package -DskipTests')
                 } catch(exception){
                     sendErrorMail("Error occurred while building, error: " + exception.message)
@@ -49,10 +47,9 @@ node {
 
         stage('Test') {
             echo "Test  employees-service..."
-            //bat 'mvn test'
             withMaven(jdk: javaVersion, maven: mavenVersion) {
                 try{
-                    bat 'mvn test'
+                    runCommand('mvn test')
                 } catch(exception){
                     sendErrorMail("Error occurred while testing, error: " + exception.message)
                     warnError(exception.message)
