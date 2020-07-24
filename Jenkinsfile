@@ -18,38 +18,50 @@ def sendErrorMail(error){
     For details check the Job console: ${env.BUILD_URL}console"""
 }
 
+def runCommand(command){
+    if(isUnix){
+        sh command
+    } else {
+        bat command
+    }
+}
+
 node {
     ansiColor('xterm') {
          stage('Checkout') {
-                echo "Checkout employees-service..."
-                git branch: branch, url: scmUrl
+            echo "Checkout employees-service..."
+            git branch: branch, url: scmUrl
          }
 
          stage('Build') {
-                echo "Build  employees-service..."
-                //bat 'mvn package -DskipTests'
-                withMaven(jdk: javaVersion, maven: mavenVersion) {
-                    try{
-                    ansiColor('xterm') {
-                        bat 'mvn package -DskipTests'
-                        }
-                    } catch(exception){
-                        sendErrorMail("Error occurred while building, error: " + exception.message)
-                        warnError(exception.message)
-                    }
+            echo "Build  employees-service..."
+            //bat 'mvn package -DskipTests'
+            withMaven(jdk: javaVersion, maven: mavenVersion) {
+                try{
+                    //bat 'mvn package -DskipTests'
+                    runCommand('mvn package -DskipTests')
+                } catch(exception){
+                    sendErrorMail("Error occurred while building, error: " + exception.message)
+                    warnError(exception.message)
                 }
+            }
          }
 
         stage('Test') {
             echo "Test  employees-service..."
             //bat 'mvn test'
             withMaven(jdk: javaVersion, maven: mavenVersion) {
-                bat 'mvn test'
+                try{
+                    bat 'mvn test'
+                } catch(exception){
+                    sendErrorMail("Error occurred while testing, error: " + exception.message)
+                    warnError(exception.message)
+                }
             }
         }
 
         stage('Notify'){
-            echo "Notify contributer ..."
+            echo "Notify contributors ..."
             sendSuccessMail()
         }
 
