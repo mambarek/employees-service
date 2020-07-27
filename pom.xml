@@ -13,7 +13,7 @@
     <description>Employees Microservice</description>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/mambarek/employees-service.git</developerConnection>
-        <url>https://github.com/mambarek/employees-service.git</url>
+        <developerConnection>scm:git:http://localhost:7990/scm/ema/employees-service.git</developerConnection>
+        <url>http://localhost:7990/scm/ema/employees-service.git</url>
     </scm>
 </project>
