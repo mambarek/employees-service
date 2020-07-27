@@ -14,6 +14,6 @@
 
     <scm>
         <developerConnection>scm:git:ssh://git@ubuntu-server:7999/ema/employees-service.git</developerConnection>
-        <url>ssh://git@ubuntu-server:7999/ema/employees-service.git</url>
+        <url>http://ubuntu-server:7990/scm/ema/employees-service</url>
     </scm>
 </project>
