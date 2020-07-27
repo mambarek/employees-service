@@ -4,4 +4,4 @@ Country may be to an independent service
 So now Test a git push and now from Ubuntu
 Idea changes
 Change with SSH from win10
-try now push t launch a bitbucket webhook
+try now push t launch a bitbucket webhooks
