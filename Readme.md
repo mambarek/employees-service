@@ -6,3 +6,4 @@ Idea changes
 Change with SSH from win10
 try now push t launch a bitbucket webhooks
 Here test a pull request
+Now after config bitbucket in jenkins it should work
