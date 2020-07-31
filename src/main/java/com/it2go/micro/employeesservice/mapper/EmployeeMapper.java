@@ -39,14 +39,18 @@ public interface EmployeeMapper{
     @Mapping(target = "email", source = "data.email")
     @Mapping(target = "address", source = "data.address")
     EmployeeEntity simpleUpdateEmployee(@MappingTarget EmployeeEntity employeeEntity, Employee employee);
+
     default EmployeeEntity updateEmployeeEntity(@MappingTarget EmployeeEntity employeeEntity, Employee employee){
 
         // update all direct attributes
         EmployeeEntity updateEmployee = simpleUpdateEmployee(employeeEntity, employee);
+        // and now the reference
         updateEmployee.getDocuments().forEach(documentEntity -> documentEntity.setOwner(updateEmployee));
 
         return updateEmployee;
     }
 
+    // implement explicitly an update for the list this would be
+    // checked and called automatically from MapStruct in simpleUpdateEmployee
     List<DocumentEntity> updateDocumentEntityList(@MappingTarget List<DocumentEntity> documentEntities, List<Document> documents);
 }

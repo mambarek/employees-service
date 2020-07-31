@@ -83,7 +83,8 @@ public class EmployeeEntity implements Serializable {
         Objects.requireNonNull(documentEntity);
 
         documentEntity.setOwner(this);
-        if(this.documents == null) this.documents = new ArrayList<>();
+        // attention lazy loading
+        if(this.getDocuments() == null) this.documents = new ArrayList<>();
         this.documents.add(documentEntity);
     }
 }
