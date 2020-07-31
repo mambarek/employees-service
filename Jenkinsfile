@@ -31,8 +31,9 @@ node {
     ansiColor('xterm') {
          stage('Checkout') {
             echo "Checkout employees-service..."
-            git branch: branch, url: scmUrl
+            //git branch: branch, url: scmUrl
             //git credentialsId: 'a437696e-492e-45df-94f1-79a5baf98a8f', url: scmUrl
+            checkout scm
          }
 
          stage('Build') {
