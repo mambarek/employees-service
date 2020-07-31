@@ -30,7 +30,7 @@ node {
     ansiColor('xterm') {
          stage('Checkout') {
             echo "Checkout employees-service..."
-            git branch: branch, url: scmUrl
+            //git branch: branch, url: scmUrl
          }
 
          stage('Build') {
