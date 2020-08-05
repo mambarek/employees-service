@@ -1,10 +1,10 @@
 Documents may be an independent service
 Country may be to an independent service 
 
-So now Test a git push and now from Ubuntu
-Idea changes
-Change with SSH from win10
-try now push t launch a bitbucket webhooks
-Here test a pull request
-Now after config bitbucket in jenkins it should work
-sdfsdfs
+### Swagger UI
+ATTENTION: HAL-Browser and Explorer don't work with Swagger
+it rises exceptions so avoid it to add them
+#### api-docs
+http://localhost:8010/v2/api-docs
+#### swagger ui
+http://localhost:8010/swagger-ui.html

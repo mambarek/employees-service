@@ -1,0 +1,146 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: "http://localhost:8020"
+  description: Generated server url
+paths:
+  /api/v1/projects/{publicId}:
+    get:
+      tags:
+      - project-controller
+      operationId: getProjectByPublicId
+      parameters:
+      - name: publicId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Project"
+  /api/v1/projects/count:
+    get:
+      tags:
+      - project-controller
+      operationId: getProjectsCount
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+  /api/v1/projects:
+    get:
+      tags:
+      - project-controller
+      operationId: getAllProjects
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      tags:
+      - project-controller
+      operationId: saveProject
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Project"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Project"
+
+components:
+  schemas:
+    Project:
+      required:
+      - publicId
+      type: object
+      properties:
+        publicId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        budget:
+          type: number
+          format: double
+        planedStartDate:
+          type: string
+          format: date
+        planedFinishDate:
+          type: string
+          format: date
+        startDate:
+          type: string
+          format: date
+        finishDate:
+          type: string
+          format: date
+        status:
+          type: string
+          enum:
+          - WAITING
+          - WORKING
+          - STOPPED
+          - FINISHED
+        projectSteps:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProjectStep"
+    ProjectStep:
+      required:
+      - publicId
+      type: object
+      properties:
+        publicId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        budget:
+          type: number
+          format: double
+        planedStartDate:
+          type: string
+          format: date
+        planedFinishDate:
+          type: string
+          format: date
+        startDate:
+          type: string
+          format: date
+        finishDate:
+          type: string
+          format: date
+        status:
+          type: string
+          enum:
+          - WAITING
+          - WORKING
+          - STOPPED
+          - FINISHED

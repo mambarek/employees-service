@@ -4,6 +4,7 @@ import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.mapper.EmployeeMapper;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,18 @@ public class EmployeesServiceImpl implements EmployeesService{
 
     private final EmployeeMapper employeeMapper;
     private final EmployeeRepository employeeRepository;
+
+    @Override
+    public List<Employee> findAllEmployees() {
+        List<Employee> result = new ArrayList<>();
+        employeeRepository.findAll().forEach(
+            employeeEntity -> {
+                result.add(employeeMapper.employeeEntityToEmployee(employeeEntity));
+            }
+        );
+
+        return result;
+    }
 
     @Override
     public Employee findEmployeeByPublicId(UUID publicId){

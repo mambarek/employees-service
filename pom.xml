@@ -16,4 +16,53 @@
         <developerConnection>scm:git:ssh://git@ubuntu-server:7999/ema/employees-service.git</developerConnection>
         <url>http://ubuntu-server:7990/scm/ema/employees-service</url>
     </scm>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>4.3.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>
+                                ${project.basedir}/src/main/resources/project-api.yaml
+                            </inputSpec>
+                            <generatorName>spring</generatorName>
+                            <modelPackage>com.it2go.micro.projectservice.domain</modelPackage>
+                            <skipValidateSpec>true</skipValidateSpec>
+                            <withXml>true</withXml>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <generateApis>false</generateApis>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateModelDocumentation>true</generateModelDocumentation>
+                            <verbose>false</verbose>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

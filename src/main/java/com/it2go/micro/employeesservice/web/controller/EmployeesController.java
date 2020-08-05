@@ -3,6 +3,7 @@ package com.it2go.micro.employeesservice.web.controller;
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.services.EmployeesService;
 import com.it2go.micro.employeesservice.services.EmployeesServiceImpl;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -48,5 +49,17 @@ public class EmployeesController {
         Employee employeeByPublicId = employeesService.findEmployeeByPublicId(publicId);
 
         return new ResponseEntity<>(employeeByPublicId, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Employee>> findAllEmployees(){
+        List<Employee> allEmployees = employeesService.findAllEmployees();
+
+        return new ResponseEntity<>(allEmployees, HttpStatus.OK);
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getEmployeeCount(){
+        return  new ResponseEntity<>(employeesService.countEmployees(), HttpStatus.OK);
     }
 }
