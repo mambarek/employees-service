@@ -58,6 +58,12 @@ public class EmployeesController {
         return new ResponseEntity<>(allEmployees, HttpStatus.OK);
     }
 
+    @DeleteMapping("/{publicId}")
+    public ResponseEntity<Void> deleteEmployee(@PathVariable @NotNull UUID publicId){
+        employeesService.deleteEmploy(publicId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> getEmployeeCount(){
         return  new ResponseEntity<>(employeesService.countEmployees(), HttpStatus.OK);
