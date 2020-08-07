@@ -11,5 +11,6 @@ public interface EmployeesService {
     Employee findEmployeeByPublicId(UUID publicId);
     Employee saveNewEmployee(Employee employee);
     Employee updateEmployee(Employee employee);
+    void deleteEmploy(UUID publicId);
     Long countEmployees();
 }

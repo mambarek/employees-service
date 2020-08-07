@@ -61,6 +61,14 @@ public class EmployeesServiceImpl implements EmployeesService{
     }
 
     @Override
+    public void deleteEmploy(UUID publicId) {
+        EmployeeEntity byPublicId = employeeRepository.findByPublicId(publicId)
+            .orElseThrow(EntityNotFoundException::new);
+
+        employeeRepository.delete(byPublicId);
+    }
+
+    @Override
     public Long countEmployees() {
         return employeeRepository.count();
     }
