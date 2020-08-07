@@ -5,12 +5,18 @@
     <parent>
         <groupId>com.it2go.micro</groupId>
         <artifactId>microservices-bom</artifactId>
-        <version>1.1</version>
+        <version>1.5-SNAPSHOT</version>
     </parent>
     <artifactId>employees-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>employees-service</name>
     <description>Employees Microservice</description>
+
+    <properties>
+        <project-api.version>0.0.1-SNAPSHOT</project-api.version>
+        <external-openapi-definitions-basedir>${project.build.directory}/openapi-definitions</external-openapi-definitions-basedir>
+        <project-api-definition-basedir>${external-openapi-definitions-basedir}/project-api/BOOT-INF/classes</project-api-definition-basedir>
+    </properties>
 
     <scm>
         <developerConnection>scm:git:ssh://git@ubuntu-server:7999/ema/employees-service.git</developerConnection>
@@ -38,6 +44,32 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-project-api-spec</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.it2go.micro</groupId>
+                                    <artifactId>project-management-service</artifactId>
+                                    <version>${project-api.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <includes>**/project-api.yaml</includes>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${external-openapi-definitions-basedir}/project-api/</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>4.3.1</version>
@@ -47,9 +79,14 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <!-- Generate stubs from maven repo-->
+                            <inputSpec>${project-api-definition-basedir}/project-api.yaml</inputSpec>
+                            <!-- Generate stubs from local file -->
+<!--
                             <inputSpec>
                                 ${project.basedir}/src/main/resources/project-api.yaml
                             </inputSpec>
+-->
                             <generatorName>spring</generatorName>
                             <modelPackage>com.it2go.micro.projectservice.domain</modelPackage>
                             <skipValidateSpec>true</skipValidateSpec>
