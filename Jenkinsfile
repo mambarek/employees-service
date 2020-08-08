@@ -40,7 +40,7 @@ node {
             echo "Build  employees-service..."
             withMaven(jdk: javaVersion, maven: mavenVersion) {
                 try{
-                    runCommand('mvn package -DskipTests')
+                    runCommand('mvn clean package -DskipTests')
                 } catch(exception){
                     sendErrorMail("Error occurred while building, error: " + exception.message)
                     warnError(exception.message)
