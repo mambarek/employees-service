@@ -13,7 +13,7 @@
     <description>Employees Microservice</description>
 
     <properties>
-        <project-api.version>1.0.0</project-api.version>
+        <project-api.version>1.0.1-SNAPSHOT</project-api.version>
         <external-openapi-definitions-basedir>${project.build.directory}/openapi-definitions</external-openapi-definitions-basedir>
         <project-api-definition-basedir>${external-openapi-definitions-basedir}/project-api/BOOT-INF/classes</project-api-definition-basedir>
     </properties>
@@ -64,6 +64,8 @@
                                     <includes>**/project-api.yaml</includes>
                                 </artifactItem>
                             </artifactItems>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <overWriteReleases>true</overWriteReleases>
                             <outputDirectory>${external-openapi-definitions-basedir}/project-api/</outputDirectory>
                         </configuration>
                     </execution>
