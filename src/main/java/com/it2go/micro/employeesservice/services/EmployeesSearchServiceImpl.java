@@ -1,13 +1,12 @@
 package com.it2go.micro.employeesservice.services;
 
-import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity_;
 import com.it2go.micro.employeesservice.search.PredicateBuilder;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItem;
 import com.it2go.micro.employeesservice.search.table.EmployeesSearchTemplate;
+import com.it2go.micro.employeesservice.search.table.EmployeeTableItemList;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CompoundSelection;
@@ -16,7 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.EntityType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +25,8 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
   final EntityManager entityManager;
 
   @Override
-  public List<EmployeeTableItem> filterEmployees(EmployeesSearchTemplate employeesSearchTemplate) {
+  public EmployeeTableItemList filterEmployees(EmployeesSearchTemplate employeesSearchTemplate) {
+    System.out.println("Call of filterEmployees with template " + employeesSearchTemplate);
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
     CriteriaQuery<EmployeeTableItem> criteriaQuery = cb.createQuery(EmployeeTableItem.class);
@@ -46,10 +45,13 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
 
     final CriteriaQuery<EmployeeTableItem> select = criteriaQuery.select(compoundSelection);
 
-    PredicateBuilder<EmployeeEntity> predicateBuilder = PredicateBuilder
-        .createPredicates(cb, employeeRoot, employeesSearchTemplate.getFilters());
+    PredicateBuilder<EmployeeEntity> predicateBuilder = null;
+    if(employeesSearchTemplate.getFilters() != null) {
+      predicateBuilder = PredicateBuilder
+          .createPredicates(cb, employeeRoot, employeesSearchTemplate.getFilters());
 
-    select.where(predicateBuilder.getPredicates().toArray(new Predicate[0]));
+      select.where(predicateBuilder.getPredicates().toArray(new Predicate[0]));
+    }
 
     // Order by
     Order orderBy = null;
@@ -73,7 +75,9 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
     final TypedQuery<EmployeeTableItem> query = entityManager.createQuery(select);
 
     // set query parameter if exists
-    predicateBuilder.getParamMap().forEach(query::setParameter);
+    if(predicateBuilder != null) {
+      predicateBuilder.getParamMap().forEach(query::setParameter);
+    }
 
     if (employeesSearchTemplate.getMaxResult() > 0) {
       query.setMaxResults(employeesSearchTemplate.getMaxResult());
@@ -84,6 +88,6 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
     final List<EmployeeTableItem> resultList = query.getResultList();
     System.out.println("resultList = " + resultList.size());
 
-    return resultList;
+    return new EmployeeTableItemList(resultList);
   }
 }
