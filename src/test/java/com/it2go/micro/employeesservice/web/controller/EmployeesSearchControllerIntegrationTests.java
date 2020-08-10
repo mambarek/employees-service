@@ -2,17 +2,18 @@ package com.it2go.micro.employeesservice.web.controller;
 
 import com.it2go.micro.employeesservice.EmployeesServiceApplication;
 import com.it2go.micro.employeesservice.domian.Employee;
+import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity_;
+import com.it2go.micro.employeesservice.search.Group;
+import com.it2go.micro.employeesservice.search.Rule;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItem;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItemList;
 import com.it2go.micro.employeesservice.search.table.EmployeesSearchTemplate;
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.ResponseEntity;
 
 @SpringBootTest(classes = EmployeesServiceApplication.class,
     webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -27,6 +28,36 @@ public class EmployeesSearchControllerIntegrationTests {
   @Test
   public void testSearch(){
     EmployeesSearchTemplate employeesSearchTemplate = new EmployeesSearchTemplate();
+    Object o = restTemplate.postForObject("http://localhost:" + port + "/api/v1/search",
+        employeesSearchTemplate, EmployeeTableItemList.class);
+    System.out.println(o);
+  }
+
+  @Test
+  public void testSearchWithRuleAndFindEmployee(){
+    Rule rule = new Rule();
+    rule.setField(EmployeeEntity_.firstName.getName());
+    rule.setData("Ali");
+    Group group = new Group();
+    group.getRules().add(rule);
+
+    EmployeesSearchTemplate employeesSearchTemplate = new EmployeesSearchTemplate();
+    employeesSearchTemplate.setFilters(group);
+    Object o = restTemplate.postForObject("http://localhost:" + port + "/api/v1/search",
+        employeesSearchTemplate, EmployeeTableItemList.class);
+    System.out.println(o);
+  }
+
+  @Test
+  public void testSearchWithRuleDoNotAndFindEmployee(){
+    Rule rule = new Rule();
+    rule.setField(EmployeeEntity_.firstName.getName());
+    rule.setData("Thom");
+    Group group = new Group();
+    group.getRules().add(rule);
+
+    EmployeesSearchTemplate employeesSearchTemplate = new EmployeesSearchTemplate();
+    employeesSearchTemplate.setFilters(group);
     Object o = restTemplate.postForObject("http://localhost:" + port + "/api/v1/search",
         employeesSearchTemplate, EmployeeTableItemList.class);
     System.out.println(o);

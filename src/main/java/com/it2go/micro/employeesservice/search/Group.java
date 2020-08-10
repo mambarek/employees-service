@@ -1,6 +1,7 @@
 package com.it2go.micro.employeesservice.search;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
@@ -8,6 +9,6 @@ import lombok.Data;
 public class Group implements Serializable {
 
   private GroupOperation groupOp;
-  private List<Rule> rules;
-  private List<Group> groups;
+  private List<Rule> rules = new ArrayList<>();
+  private List<Group> groups = new ArrayList<>();
 }

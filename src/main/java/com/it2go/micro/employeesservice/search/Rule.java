@@ -6,8 +6,7 @@ import lombok.Data;
 public class Rule {
 
   private String field;
-  private Operation op;
+  private Operation op = Operation.EQUAL;
   private String data;
-  // text, number, date
-  private String type = "string";
+  private RuleType type = RuleType.STRING;
 }

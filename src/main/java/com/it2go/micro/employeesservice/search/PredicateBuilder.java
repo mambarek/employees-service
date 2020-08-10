@@ -53,8 +53,8 @@ public class PredicateBuilder<T> {
 
       if(rule.getData() != null && !rule.getData().isEmpty()){
         final Object value;
-        boolean isDate = "date".equals(rule.getType().toLowerCase());
-        boolean isNumber = "number".equals(rule.getType().toLowerCase());
+        boolean isDate = RuleType.DATE.equals(rule.getType());
+        boolean isNumber = RuleType.NUMBER.equals(rule.getType());
 
         String escapedValue = escape(rule.getData());
         final Expression path;
@@ -161,6 +161,9 @@ public class PredicateBuilder<T> {
         }
       }
 
+      if(rulePredicate != null){
+        pb.getPredicates().add(rulePredicate);
+      }
     }
 
     return pb;
