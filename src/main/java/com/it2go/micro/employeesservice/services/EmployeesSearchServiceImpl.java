@@ -1,5 +1,6 @@
 package com.it2go.micro.employeesservice.services;
 
+import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity_;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity_;
 import com.it2go.micro.employeesservice.search.PredicateBuilder;
@@ -32,6 +33,8 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
     CriteriaQuery<EmployeeTableItem> criteriaQuery = cb.createQuery(EmployeeTableItem.class);
     Root<EmployeeEntity> employeeRoot = criteriaQuery.from(EmployeeEntity.class);
 
+    // Achtung hier ist die Reihenfolge wichtig damit die selektierten spalten zu den Attributen
+    // von EmployeeTableItem passen
     final CompoundSelection<EmployeeTableItem> compoundSelection = cb
         .construct(EmployeeTableItem.class,
             employeeRoot.get(EmployeeEntity_.publicId),
@@ -41,7 +44,12 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
             employeeRoot.get(EmployeeEntity_.salary),
             employeeRoot.get(EmployeeEntity_.traveling),
             employeeRoot.get(EmployeeEntity_.weekendWork),
-            employeeRoot.get(EmployeeEntity_.createdAt));
+            employeeRoot.get(EmployeeEntity_.createdAt),
+            employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.STREET_ONE),
+            employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.BUILDING_NR),
+            employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.CITY),
+            employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.ZIP_CODE),
+            employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.COUNTRY_CODE));
 
     final CriteriaQuery<EmployeeTableItem> select = criteriaQuery.select(compoundSelection);
 

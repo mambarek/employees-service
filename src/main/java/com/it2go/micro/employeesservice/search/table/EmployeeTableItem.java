@@ -24,6 +24,11 @@ public class EmployeeTableItem implements Serializable {
   private boolean traveling;
   private boolean weekendWork;
   private OffsetDateTime createdAt;
-
+  // Address data AddressEntity
+  private String streetOne;
+  private String buildingNr;
+  private String city;
+  private String zipCode;
+  private String countryCode;
 }
 
