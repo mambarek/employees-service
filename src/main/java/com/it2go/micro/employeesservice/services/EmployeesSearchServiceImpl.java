@@ -4,9 +4,9 @@ import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity_;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity_;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItem;
-import com.it2go.micro.employeesservice.search.table.EmployeesSearchTemplate;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItemList;
 import de.it2go.util.jpa.search.PredicateBuilder;
+import de.it2go.util.jpa.search.SearchTemplate;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -26,8 +26,8 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
   final EntityManager entityManager;
 
   @Override
-  public EmployeeTableItemList filterEmployees(EmployeesSearchTemplate employeesSearchTemplate) {
-    System.out.println("Call of filterEmployees with template " + employeesSearchTemplate);
+  public EmployeeTableItemList filterEmployees(SearchTemplate searchTemplate) {
+    System.out.println("Call of filterEmployees with template " + searchTemplate);
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
     CriteriaQuery<EmployeeTableItem> criteriaQuery = cb.createQuery(EmployeeTableItem.class);
@@ -54,9 +54,9 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
     final CriteriaQuery<EmployeeTableItem> select = criteriaQuery.select(compoundSelection);
 
     PredicateBuilder predicateBuilder = null;
-    if(employeesSearchTemplate.getFilters() != null) {
+    if(searchTemplate.getFilters() != null) {
       predicateBuilder = PredicateBuilder
-          .createPredicates(cb, employeeRoot, employeesSearchTemplate.getFilters());
+          .createPredicates(cb, employeeRoot, searchTemplate.getFilters());
 
       select.where(predicateBuilder.getPredicates().toArray(new Predicate[0]));
     }
@@ -64,14 +64,14 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
     // Order by
     Order orderBy = null;
 
-    if (employeesSearchTemplate.getOrderBy() != null && !employeesSearchTemplate.getOrderBy()
+    if (searchTemplate.getOrderBy() != null && !searchTemplate.getOrderBy()
         .isEmpty()) {
-      switch (employeesSearchTemplate.getOrderDirection()) {
+      switch (searchTemplate.getOrderDirection()) {
         case "asc":
-          orderBy = cb.asc(employeeRoot.get(employeesSearchTemplate.getOrderBy()));
+          orderBy = cb.asc(employeeRoot.get(searchTemplate.getOrderBy()));
           break;
         case "desc":
-          orderBy = cb.desc(employeeRoot.get(employeesSearchTemplate.getOrderBy()));
+          orderBy = cb.desc(employeeRoot.get(searchTemplate.getOrderBy()));
           break;
       }
     }
@@ -87,11 +87,11 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
       predicateBuilder.getParamMap().forEach(query::setParameter);
     }
 
-    if (employeesSearchTemplate.getMaxResult() > 0) {
-      query.setMaxResults(employeesSearchTemplate.getMaxResult());
+    if (searchTemplate.getMaxResult() > 0) {
+      query.setMaxResults(searchTemplate.getMaxResult());
     }
 
-    query.setFirstResult(employeesSearchTemplate.getOffset());
+    query.setFirstResult(searchTemplate.getOffset());
 
     final List<EmployeeTableItem> resultList = query.getResultList();
     System.out.println("resultList = " + resultList.size());

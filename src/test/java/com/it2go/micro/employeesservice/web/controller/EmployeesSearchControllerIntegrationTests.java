@@ -8,6 +8,7 @@ import com.it2go.micro.employeesservice.search.table.EmployeesSearchTemplate;
 import de.it2go.util.jpa.search.Group;
 import de.it2go.util.jpa.search.Rule;
 import de.it2go.util.jpa.search.RuleType;
+import de.it2go.util.jpa.search.SearchTemplate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,9 +28,9 @@ public class EmployeesSearchControllerIntegrationTests {
 
   @Test
   public void testSearch(){
-    EmployeesSearchTemplate employeesSearchTemplate = new EmployeesSearchTemplate();
+    SearchTemplate searchTemplate = new SearchTemplate();
     Object o = restTemplate.postForObject("http://localhost:" + port + "/api/v1/search",
-        employeesSearchTemplate, EmployeeTableItemList.class);
+        searchTemplate, EmployeeTableItemList.class);
     System.out.println(o);
   }
 
