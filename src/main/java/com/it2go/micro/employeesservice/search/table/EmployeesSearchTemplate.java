@@ -1,6 +1,6 @@
 package com.it2go.micro.employeesservice.search.table;
 
-import com.it2go.micro.employeesservice.search.Group;
+import de.it2go.util.jpa.search.Group;
 import java.io.Serializable;
 import lombok.Data;
 

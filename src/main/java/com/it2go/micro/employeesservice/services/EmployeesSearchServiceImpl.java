@@ -3,10 +3,10 @@ package com.it2go.micro.employeesservice.services;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity_;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity_;
-import com.it2go.micro.employeesservice.search.PredicateBuilder;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItem;
 import com.it2go.micro.employeesservice.search.table.EmployeesSearchTemplate;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItemList;
+import de.it2go.util.jpa.search.PredicateBuilder;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -53,7 +53,7 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
 
     final CriteriaQuery<EmployeeTableItem> select = criteriaQuery.select(compoundSelection);
 
-    PredicateBuilder<EmployeeEntity> predicateBuilder = null;
+    PredicateBuilder predicateBuilder = null;
     if(employeesSearchTemplate.getFilters() != null) {
       predicateBuilder = PredicateBuilder
           .createPredicates(cb, employeeRoot, employeesSearchTemplate.getFilters());
