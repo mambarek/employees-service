@@ -5,7 +5,7 @@ import com.it2go.micro.employeesservice.search.table.EmployeeTableItem;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItemList;
 import com.it2go.micro.employeesservice.services.EmployeesSearchService;
 import com.it2go.micro.employeesservice.services.EmployeesService;
-import de.it2go.util.jpa.search.SearchTemplate;
+import com.it2go.util.jpa.search.SearchTemplate;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;

@@ -40,8 +40,8 @@
             <version>0.1.0</version>
         </dependency>
         <dependency>
-            <groupId>de.it2go</groupId>
-            <artifactId>it2go-utils</artifactId>
+            <groupId>com.it2go</groupId>
+            <artifactId>shared-utils</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
