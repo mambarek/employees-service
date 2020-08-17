@@ -13,13 +13,13 @@
     <description>Employees Microservice</description>
 
     <properties>
-        <project-api.version>1.0.0</project-api.version>
+        <project-api.version>1.0.2-SNAPSHOT</project-api.version>
         <external-openapi-definitions-basedir>${project.build.directory}/openapi-definitions</external-openapi-definitions-basedir>
         <project-api-definition-basedir>${external-openapi-definitions-basedir}/project-api/BOOT-INF/classes</project-api-definition-basedir>
     </properties>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@ubuntu-server:7999/ema/employees-service.git</developerConnection>
+        <developerConnection>scm:git:http://mmbarek:mmbarek@ubuntu-server:7990/scm/ema/employees-service.git</developerConnection>
         <url>http://ubuntu-server:7990/scm/ema/employees-service</url>
     </scm>
 

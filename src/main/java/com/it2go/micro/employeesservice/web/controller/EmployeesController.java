@@ -38,7 +38,8 @@ public class EmployeesController {
     }
 
     @PutMapping("/{publicId}")
-    public ResponseEntity<Employee> updateEmploy(@RequestBody @Valid Employee employee){
+    public ResponseEntity<Employee> updateEmploy(@RequestBody @Valid Employee employee, @PathVariable @NotNull UUID publicId){
+        if(!publicId.equals(employee.getPublicId())) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         Employee updateEmployee = employeesService.updateEmployee(employee);
 
         return ResponseEntity.ok(updateEmployee);
