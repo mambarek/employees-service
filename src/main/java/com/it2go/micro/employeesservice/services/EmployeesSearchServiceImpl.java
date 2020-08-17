@@ -94,7 +94,6 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
     query.setFirstResult(searchTemplate.getOffset());
 
     final List<EmployeeTableItem> resultList = query.getResultList();
-    System.out.println("resultList = " + resultList.size());
 
     return new EmployeeTableItemList(resultList);
   }
