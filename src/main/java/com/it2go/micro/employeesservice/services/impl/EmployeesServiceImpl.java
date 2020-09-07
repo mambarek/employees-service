@@ -1,9 +1,11 @@
-package com.it2go.micro.employeesservice.services;
+package com.it2go.micro.employeesservice.services.impl;
 
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.mapper.EmployeeMapper;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
+import com.it2go.micro.employeesservice.services.EmployeesService;
+import com.it2go.micro.employeesservice.services.EntityNotFoundException;
 import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeesServiceImpl implements EmployeesService{
+public class EmployeesServiceImpl implements EmployeesService {
 
     private final EmployeeMapper employeeMapper;
     private final EmployeeRepository employeeRepository;
@@ -33,7 +35,7 @@ public class EmployeesServiceImpl implements EmployeesService{
 
     @Override
     public Employee findEmployeeByPublicId(UUID publicId){
-        EmployeeEntity employeeEntity = employeeRepository.findByPublicId(publicId).orElseThrow(EntityNotFoundException::new);
+        EmployeeEntity employeeEntity = employeeRepository.findByPublicId(publicId).orElse(null);
         return employeeMapper.employeeEntityToEmployee(employeeEntity);
     }
 

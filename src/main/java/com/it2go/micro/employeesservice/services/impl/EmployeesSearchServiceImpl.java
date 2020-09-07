@@ -1,10 +1,11 @@
-package com.it2go.micro.employeesservice.services;
+package com.it2go.micro.employeesservice.services.impl;
 
 import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity_;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity_;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItem;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItemList;
+import com.it2go.micro.employeesservice.services.EmployeesSearchService;
 import com.it2go.util.jpa.search.PredicateBuilder;
 import com.it2go.util.jpa.search.SearchTemplate;
 import java.util.List;

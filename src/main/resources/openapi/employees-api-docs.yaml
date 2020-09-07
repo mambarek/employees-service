@@ -1,0 +1,371 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8010
+  description: Generated server url
+paths:
+  /api/v1/employees:
+    get:
+      tags:
+      - employees-controller
+      operationId: findAllEmployees
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+    post:
+      tags:
+      - employees-controller
+      operationId: saveNewEmployee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Employee'
+  /api/v1/employees/{publicId}:
+    get:
+      tags:
+      - employees-controller
+      operationId: findEmployeeByPublicId
+      parameters:
+      - name: publicId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Employee'
+    put:
+      tags:
+      - employees-controller
+      operationId: updateEmploy
+      parameters:
+      - name: publicId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Employee'
+    delete:
+      tags:
+      - employees-controller
+      operationId: deleteEmployee
+      parameters:
+      - name: publicId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: OK
+  /api/v1/employees/count:
+    get:
+      tags:
+      - employees-controller
+      operationId: getEmployeeCount
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+  /api/v1/search:
+    get:
+      tags:
+      - employees-search-controller
+      operationId: findAllEmployees_1
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+    post:
+      tags:
+      - employees-search-controller
+      operationId: searchEmployees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchTemplate'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EmployeeTableItemList'
+components:
+  schemas:
+    Address:
+      required:
+      - buildingNr
+      - city
+      - countryCode
+      - publicId
+      - streetOne
+      - zipCode
+      type: object
+      properties:
+        publicId:
+          type: string
+          format: uuid
+        streetOne:
+          maxLength: 100
+          minLength: 3
+          type: string
+        buildingNr:
+          maxLength: 5
+          minLength: 1
+          type: string
+        streetTwo:
+          maxLength: 100
+          minLength: 3
+          type: string
+        zipCode:
+          maxLength: 10
+          minLength: 5
+          type: string
+        city:
+          maxLength: 100
+          minLength: 3
+          type: string
+        countryCode:
+          maxLength: 3
+          minLength: 2
+          type: string
+    Document:
+      required:
+      - contentType
+      - name
+      - publicId
+      type: object
+      properties:
+        publicId:
+          type: string
+          format: uuid
+        name:
+          maxLength: 100
+          minLength: 3
+          type: string
+        contentType:
+          maxLength: 20
+          minLength: 3
+          type: string
+        content:
+          type: array
+          items:
+            type: string
+            format: byte
+    Employee:
+      required:
+      - createdAt
+      - createdBy
+      - publicId
+      type: object
+      properties:
+        publicId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+        data:
+          $ref: '#/components/schemas/PersonData'
+        salary:
+          type: number
+          format: double
+        weekendWork:
+          type: boolean
+        traveling:
+          type: boolean
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/Document'
+    PersonData:
+      required:
+      - birthDate
+      - email
+      - firstName
+      - gender
+      - lastName
+      type: object
+      properties:
+        firstName:
+          maxLength: 100
+          minLength: 3
+          type: string
+        lastName:
+          maxLength: 100
+          minLength: 3
+          type: string
+        birthDate:
+          type: string
+          format: date
+        gender:
+          type: string
+          enum:
+          - MALE
+          - FEMALE
+        email:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+    Group:
+      type: object
+      properties:
+        groupOp:
+          type: string
+          enum:
+          - AND
+          - OR
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rule'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    Rule:
+      type: object
+      properties:
+        field:
+          type: string
+        op:
+          type: string
+          enum:
+          - EQUAL
+          - NOT_EQUAL
+          - LESS
+          - LESS_OR_EQUAL
+          - GREATER
+          - GREATER_OR_EQUAL
+          - BEGINS_WITH
+          - NOT_BEGIN_WITH
+          - IN
+          - NOT_IN
+          - ENDS_WITH
+          - NOT_ENDS_WITH
+          - CONTAINS
+          - NOT_CONTAINS
+          - "NULL"
+          - NOT_NULL
+          - BETWEEN
+        data:
+          type: string
+        type:
+          type: string
+          enum:
+          - STRING
+          - NUMBER
+          - DATE
+          - TIMESTAMP
+    SearchTemplate:
+      type: object
+      properties:
+        orderBy:
+          type: string
+        orderDirection:
+          type: string
+        maxResult:
+          type: integer
+          format: int32
+        offset:
+          type: integer
+          format: int32
+        filters:
+          $ref: '#/components/schemas/Group'
+    EmployeeTableItem:
+      type: object
+      properties:
+        publicId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        salary:
+          type: number
+          format: double
+        traveling:
+          type: boolean
+        weekendWork:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        streetOne:
+          type: string
+        buildingNr:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+        countryCode:
+          type: string
+    EmployeeTableItemList:
+      type: object
+      properties:
+        resultList:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmployeeTableItem'
