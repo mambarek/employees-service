@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: employees-service-deployment
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            component: employees-service
+    template:
+        metadata:
+            labels:
+                component: employees-service
+        spec:
+            containers:
+                - name: employees-service
+                  image: mmbarek/employees-service
+                  ports:
+                    - containerPort: 8010                

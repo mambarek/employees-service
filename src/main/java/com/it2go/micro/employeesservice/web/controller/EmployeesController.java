@@ -2,12 +2,11 @@ package com.it2go.micro.employeesservice.web.controller;
 
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.services.EmployeesService;
-import com.it2go.micro.employeesservice.services.EmployeesServiceImpl;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,32 +20,59 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EmployeesController {
 
-    private final EmployeesService employeesService;
+  private final EmployeesService employeesService;
 
-    @PostMapping
-    public ResponseEntity<Employee> saveNewEmployee(@RequestBody @Valid Employee employee){
-        Employee savedEmployee = employeesService.saveNewEmployee(employee);
+  @PostMapping
+  public ResponseEntity<Employee> saveNewEmployee(@RequestBody @Valid Employee employee) {
+    Employee savedEmployee = employeesService.saveNewEmployee(employee);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{publicId}")
-                .buildAndExpand(employee.getPublicId()).toUri();
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{publicId}")
+        .buildAndExpand(employee.getPublicId()).toUri();
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(uri);
+    HttpHeaders responseHeaders = new HttpHeaders();
+    responseHeaders.setLocation(uri);
 
-        return new ResponseEntity<>(savedEmployee, responseHeaders, HttpStatus.CREATED);
+    return new ResponseEntity<>(savedEmployee, responseHeaders, HttpStatus.CREATED);
+  }
+
+  @PutMapping("/{publicId}")
+  public ResponseEntity<Employee> updateEmploy(@RequestBody @Valid Employee employee,
+      @PathVariable @NotNull UUID publicId) {
+    if (!publicId.equals(employee.getPublicId())) {
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    Employee updateEmployee = employeesService.updateEmployee(employee);
+
+    return ResponseEntity.ok(updateEmployee);
+  }
+
+  @GetMapping("/{publicId}")
+  public ResponseEntity<Employee> findEmployeeByPublicId(
+      @PathVariable("publicId") @NotNull UUID publicId) {
+    Employee employeeByPublicId = employeesService.findEmployeeByPublicId(publicId);
+
+    if (employeeByPublicId == null) {
+      return ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{publicId}")
-    public ResponseEntity<Employee> updateEmploy(@RequestBody @Valid Employee employee){
-        Employee updateEmployee = employeesService.updateEmployee(employee);
+    return new ResponseEntity<>(employeeByPublicId, HttpStatus.OK);
+  }
 
-        return ResponseEntity.ok(updateEmployee);
-    }
+  @GetMapping
+  public ResponseEntity<List<Employee>> findAllEmployees() {
+    List<Employee> allEmployees = employeesService.findAllEmployees();
 
-    @GetMapping("/{publicId}")
-    public ResponseEntity<Employee> findEmployeeByPublicId(@PathVariable("publicId") @NotNull UUID publicId) {
-        Employee employeeByPublicId = employeesService.findEmployeeByPublicId(publicId);
+    return new ResponseEntity<>(allEmployees, HttpStatus.OK);
+  }
 
-        return new ResponseEntity<>(employeeByPublicId, HttpStatus.OK);
-    }
+  @DeleteMapping("/{publicId}")
+  public ResponseEntity<Void> deleteEmployee(@PathVariable @NotNull UUID publicId) {
+    employeesService.deleteEmploy(publicId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/count")
+  public ResponseEntity<Long> getEmployeeCount() {
+    return new ResponseEntity<>(employeesService.countEmployees(), HttpStatus.OK);
+  }
 }

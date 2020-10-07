@@ -7,8 +7,10 @@ import java.util.UUID;
 
 public interface EmployeesService {
 
+    List<Employee> findAllEmployees();
     Employee findEmployeeByPublicId(UUID publicId);
     Employee saveNewEmployee(Employee employee);
     Employee updateEmployee(Employee employee);
+    void deleteEmploy(UUID publicId);
     Long countEmployees();
 }
