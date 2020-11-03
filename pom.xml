@@ -20,7 +20,7 @@
         <docker-maven-plugin>0.34.1</docker-maven-plugin>
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
         <docker.source.directory>docker</docker.source.directory>
-        <docker.build.directory>${project.build.directory}/docker</docker.build.directory>
+        <docker.dockerfile>Dockerfile</docker.dockerfile>
         <docker.repository>mmbarek</docker.repository>
         <docker.image.name>${project.artifactId}</docker.image.name>
     </properties>
@@ -140,7 +140,7 @@
                             <name>${docker.repository}/${docker.image.name}</name>
                             <build>
                                 <contextDir>${project.basedir}</contextDir>
-                                <dockerFile>docker/Dockerfile</dockerFile>
+                                <dockerFile>${docker.source.directory}/${docker.dockerfile}</dockerFile>
                                 <assembly>
                                     <descriptorRef>artifact</descriptorRef>
                                 </assembly>
