@@ -7,6 +7,7 @@ import com.it2go.micro.employeesservice.search.table.EmployeeTableItem;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItemList;
 import com.it2go.micro.employeesservice.services.EmployeesSearchService;
 import com.it2go.util.jpa.search.PredicateBuilder;
+import com.it2go.util.jpa.search.SearchOrder;
 import com.it2go.util.jpa.search.SearchTemplate;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -62,22 +63,18 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
       select.where(predicateBuilder.getPredicates().toArray(new Predicate[0]));
     }
 
-    // Order by
-    Order orderBy = null;
-
-    if (searchTemplate.getOrderBy() != null && !searchTemplate.getOrderBy()
-        .isEmpty()) {
-      switch (searchTemplate.getOrderDirection()) {
-        case "asc":
+    if (searchTemplate.getOrderBy() != null && !searchTemplate.getOrderBy().isEmpty()) {
+      SearchOrder orderDirection = searchTemplate.getOrderDirection();
+      if(orderDirection == null) orderDirection = SearchOrder.ASC;
+      Order orderBy = null;
+      switch (orderDirection) {
+        case ASC:
           orderBy = cb.asc(employeeRoot.get(searchTemplate.getOrderBy()));
           break;
-        case "desc":
+        case DESC:
           orderBy = cb.desc(employeeRoot.get(searchTemplate.getOrderBy()));
           break;
       }
-    }
-
-    if (orderBy != null) {
       select.orderBy(orderBy);
     }
 

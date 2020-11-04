@@ -107,7 +107,7 @@ paths:
               schema:
                 type: integer
                 format: int64
-  /api/v1/search:
+  /api/v1/employees/search:
     get:
       tags:
       - employees-search-controller

@@ -32,7 +32,10 @@ public class EmployeeLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Employee employee = employeesService.saveNewEmployee(createEmployee());
-        System.out.println(employee);
+        employeesService.saveNewEmployee(createEmployee2());
+        employeesService.saveNewEmployee(createEmployee3());
+        employeesService.saveNewEmployee(createEmployee4());
+        //System.out.println(employee);
     }
 
     public static Employee createEmployee(){
@@ -72,6 +75,138 @@ public class EmployeeLoader implements CommandLineRunner {
                 .weekendWork(false)
                 .documents(new ArrayList<>())
                 .build();
+
+        employee.getDocuments().add(doc1);
+        employee.getDocuments().add(doc2);
+
+        return employee;
+    }
+
+    public static Employee createEmployee2(){
+        Document doc1 = Document.builder()
+            .publicId(UUID.randomUUID())
+            .name("Book 2")
+            .contentType("application/pdf")
+            .build();
+
+        Document doc2 = Document.builder()
+            .publicId(UUID.randomUUID())
+            .name("The Document")
+            .contentType("application/pdf")
+            .build();
+
+        PersonData personData = PersonData.builder()
+            .birthDate(LocalDate.of(1985,6,23))
+            .email("john.doe@gmail.com")
+            .firstName("John")
+            .lastName("Doe")
+            .gender(Gender.MALE)
+            .address(Address.builder()
+                .publicId(UUID.randomUUID())
+                .streetOne("Wall street")
+                .buildingNr("350")
+                .city("London")
+                .countryCode("GB")
+                .zipCode("77777")
+                .build())
+            .build();
+
+        Employee employee = Employee.builder()
+            .publicId(UUID.randomUUID())
+            .data(personData)
+            .salary(3500.00)
+            .traveling(true)
+            .weekendWork(true)
+            .documents(new ArrayList<>())
+            .build();
+
+        employee.getDocuments().add(doc1);
+        employee.getDocuments().add(doc2);
+
+        return employee;
+    }
+
+    public static Employee createEmployee3(){
+        Document doc1 = Document.builder()
+            .publicId(UUID.randomUUID())
+            .name("My dream")
+            .contentType("application/pdf")
+            .build();
+
+        Document doc2 = Document.builder()
+            .publicId(UUID.randomUUID())
+            .name("Gozilla")
+            .contentType("application/pdf")
+            .build();
+
+        PersonData personData = PersonData.builder()
+            .birthDate(LocalDate.of(1995,9,3))
+            .email("Alice.Brown@gmail.com")
+            .firstName("Alice")
+            .lastName("Brown")
+            .gender(Gender.FEMALE)
+            .address(Address.builder()
+                .publicId(UUID.randomUUID())
+                .streetOne("21 street")
+                .buildingNr("50")
+                .city("Boston")
+                .countryCode("US")
+                .zipCode("ab-234")
+                .build())
+            .build();
+
+        Employee employee = Employee.builder()
+            .publicId(UUID.randomUUID())
+            .data(personData)
+            .salary(4500.00)
+            .traveling(false)
+            .weekendWork(true)
+            .documents(new ArrayList<>())
+            .build();
+
+        employee.getDocuments().add(doc1);
+        employee.getDocuments().add(doc2);
+
+        return employee;
+    }
+
+    public static Employee createEmployee4(){
+        Document doc1 = Document.builder()
+            .publicId(UUID.randomUUID())
+            .name("Fly")
+            .contentType("application/pdf")
+            .build();
+
+        Document doc2 = Document.builder()
+            .publicId(UUID.randomUUID())
+            .name("Tibet")
+            .contentType("application/pdf")
+            .build();
+
+        PersonData personData = PersonData.builder()
+            .birthDate(LocalDate.of(1995,9,3))
+            .email("Angela.Thomson@gmail.com")
+            .firstName("Angela")
+            .lastName("Thomson")
+            .gender(Gender.FEMALE)
+            .address(Address.builder()
+                .publicId(UUID.randomUUID())
+                .streetOne("67 street")
+                .buildingNr("750")
+                .city("Newyork")
+                .countryCode("US")
+                .zipCode("a2-555")
+                .build())
+            .build();
+
+        Employee employee = Employee.builder()
+            .publicId(UUID.randomUUID())
+            .data(personData)
+            .salary(5500.00)
+            .traveling(false)
+            .weekendWork(false)
+            .documents(new ArrayList<>())
+            .build();
 
         employee.getDocuments().add(doc1);
         employee.getDocuments().add(doc2);

@@ -47,11 +47,6 @@
             <artifactId>jackson-databind-nullable</artifactId>
             <version>0.1.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.it2go</groupId>
-            <artifactId>shared-utils</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <build>
