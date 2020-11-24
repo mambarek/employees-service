@@ -75,8 +75,7 @@ public class EmployeeEntity implements Serializable {
     @Column(name = "UPDATED_BY")
     private UUID updatedBy;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true, fetch = FetchType.LAZY)
-    // documents must be moved to another service, not loading as lazy
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true, fetch = FetchType.EAGER)
     private List<DocumentEntity> documents;
 
     public void addDocument(DocumentEntity documentEntity){

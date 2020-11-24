@@ -16,25 +16,29 @@ import java.util.UUID;
 
 public class EmployeesProducer {
 
+    public static UUID doc1PublicId = UUID.randomUUID();
+    public static UUID doc2PublicId = UUID.randomUUID();
+    public static UUID addressPublicId = UUID.randomUUID();
+    public static UUID employeePublicId = UUID.randomUUID();
 
     public static EmployeeEntity createEmployeeEntity(){
         DocumentEntity doc1 = DocumentEntity.builder()
                 .id(1L)
-                .publicId(UUID.randomUUID())
+                .publicId(doc1PublicId)
                 .contentType("test")
                 .name("file 1")
                 .build();
 
         DocumentEntity doc2 = DocumentEntity.builder()
                 .id(2L)
-                .publicId(UUID.randomUUID())
+                .publicId(doc2PublicId)
                 .contentType("test")
                 .name("file 2")
                 .build();
 
         AddressEntity addressEntity = AddressEntity.builder()
                 .id(1L)
-                .publicId(UUID.randomUUID())
+                .publicId(addressPublicId)
                 .buildingNr("55")
                 .city("Mannheim")
                 .countryCode("DE")
@@ -45,7 +49,11 @@ public class EmployeesProducer {
 
         EmployeeEntity employeeEntity = EmployeeEntity.builder()
                 .id(1L)
-                .publicId(UUID.randomUUID())
+                .publicId(employeePublicId)
+                .createdAt(OffsetDateTime.now())
+                .createdBy(UUID.randomUUID())
+                .updatedAt(OffsetDateTime.now())
+                .updatedBy(UUID.randomUUID())
                 .firstName("Martin")
                 .lastName("Fowler")
                 .birthDate(LocalDate.parse("1975-05-10"))
@@ -66,13 +74,13 @@ public class EmployeesProducer {
 
     public static Employee createEmployee(){
         Document doc1 = Document.builder()
-                .publicId(UUID.randomUUID())
+                .publicId(doc1PublicId)
                 .name("My life")
                 .contentType("application/pdf")
                 .build();
 
         Document doc2 = Document.builder()
-                .publicId(UUID.randomUUID())
+                .publicId(doc2PublicId)
                 .name("The Universe")
                 .contentType("application/pdf")
                 .build();
@@ -84,7 +92,7 @@ public class EmployeesProducer {
                 .lastName("Mbarek")
                 .gender(Gender.MALE)
                 .address(Address.builder()
-                        .publicId(UUID.randomUUID())
+                        .publicId(addressPublicId)
                         .streetOne("Rudolf-Breitscheid-Str.")
                         .buildingNr("49")
                         .city("Kaiserslautern")
@@ -94,9 +102,7 @@ public class EmployeesProducer {
                 .build();
 
         Employee employee = Employee.builder()
-                .publicId(UUID.randomUUID())
-                .createdAt(OffsetDateTime.now())
-                .createdBy(UUID.randomUUID())
+                .publicId(employeePublicId)
                 .data(personData)
                 .salary(5000.00)
                 .traveling(true)

@@ -135,7 +135,7 @@ public class EmployeeLoader implements CommandLineRunner {
 
         Document doc2 = Document.builder()
             .publicId(UUID.randomUUID())
-            .name("Gozilla")
+            .name("Godzilla")
             .contentType("application/pdf")
             .build();
 

@@ -4,6 +4,10 @@ import com.it2go.micro.employeesservice.domian.Document;
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -38,14 +42,25 @@ public interface EmployeeMapper{
     @Mapping(target = "gender", source = "data.gender")
     @Mapping(target = "email", source = "data.email")
     @Mapping(target = "address", source = "data.address")
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "updatedBy", ignore = true)
     EmployeeEntity simpleUpdateEmployee(@MappingTarget EmployeeEntity employeeEntity, Employee employee);
 
     default EmployeeEntity updateEmployeeEntity(@MappingTarget EmployeeEntity employeeEntity, Employee employee){
 
+        // gather all ids for publicIds
+        Map<UUID, Long> idsMap = employeeEntity.getDocuments().stream()
+            .collect(Collectors.toMap(DocumentEntity::getPublicId, DocumentEntity::getId));
+
         // update all direct attributes
         EmployeeEntity updateEmployee = simpleUpdateEmployee(employeeEntity, employee);
         // and now the reference
-        updateEmployee.getDocuments().forEach(documentEntity -> documentEntity.setOwner(updateEmployee));
+        updateEmployee.getDocuments().forEach(documentEntity -> {
+            documentEntity.setId(idsMap.get(documentEntity.getPublicId()));
+            documentEntity.setOwner(updateEmployee);
+        });
 
         return updateEmployee;
     }

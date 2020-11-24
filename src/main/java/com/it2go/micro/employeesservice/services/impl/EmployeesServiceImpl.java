@@ -50,12 +50,12 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee updateEmployee(Employee employee){
-        employee.setUpdatedAt(OffsetDateTime.now());
-        employee.setUpdatedBy(UUID.randomUUID()); // TODO to be changed with user publicId
         EmployeeEntity byPublicId = employeeRepository.findByPublicId(employee.getPublicId())
                 .orElseThrow(EntityNotFoundException::new);
 
         EmployeeEntity employeeEntity = employeeMapper.updateEmployeeEntity(byPublicId, employee);
+        employeeEntity.setUpdatedAt(OffsetDateTime.now());
+        employeeEntity.setUpdatedBy(UUID.randomUUID()); // TODO to be changed with user publicId
 
         EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
 
