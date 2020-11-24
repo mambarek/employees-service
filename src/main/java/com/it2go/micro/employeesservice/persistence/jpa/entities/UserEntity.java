@@ -17,9 +17,10 @@ public class UserEntity {
 
     @Id
     @GeneratedValue
+    @Column(name = "ID", unique = true, nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "PUBLIC_ID", unique = true, nullable = false)
+    @Column(name = "PUBLIC_ID", unique = true, nullable = false, updatable = false)
     private UUID publicId;
 
     private String userName;

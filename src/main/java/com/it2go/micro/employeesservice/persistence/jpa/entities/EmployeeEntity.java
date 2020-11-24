@@ -22,9 +22,10 @@ public class EmployeeEntity implements Serializable {
 
     @Id
     @GeneratedValue
+    @Column(name = "ID", unique = true, nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "PUBLIC_ID", unique = true, nullable = false)
+    @Column(name = "PUBLIC_ID", unique = true, nullable = false, updatable = false)
     private UUID publicId;
 
     @Basic
@@ -75,7 +76,7 @@ public class EmployeeEntity implements Serializable {
     @Column(name = "UPDATED_BY")
     private UUID updatedBy;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", orphanRemoval = true, fetch = FetchType.LAZY)
     private List<DocumentEntity> documents;
 
     public void addDocument(DocumentEntity documentEntity){
