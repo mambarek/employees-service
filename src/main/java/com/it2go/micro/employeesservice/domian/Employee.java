@@ -24,6 +24,7 @@ public class Employee {
     private UUID createdBy;
     private UUID updatedBy;
 
+    @NotNull
     private PersonData data;
 
     private Double salary;

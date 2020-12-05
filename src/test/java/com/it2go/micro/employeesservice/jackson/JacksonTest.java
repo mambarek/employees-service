@@ -4,10 +4,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
+import java.beans.PropertyEditorSupport;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import org.springframework.context.annotation.Bean;
+import org.springframework.format.Formatter;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.InitBinder;
 
 public class JacksonTest {
 
@@ -22,6 +32,7 @@ public class JacksonTest {
 
         EmployeeEntity employeeEntity = EmployeeEntity.builder()
                 .publicId(UUID.randomUUID())
+                .birthDate(LocalDate.of(1970,1,6))
                 .salary(1000.0)
                 .traveling(false)
                 .weekendWork(false)
@@ -46,4 +57,8 @@ Alternatively, we can also use the @JsonIgnore annotation to simply ignore one o
 We can also use the newer @JsonView annotation to exclude one side of the relationship.
          */
     }
+
+
+
 }
+

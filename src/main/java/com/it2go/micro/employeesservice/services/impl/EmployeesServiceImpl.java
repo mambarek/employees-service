@@ -41,6 +41,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee saveNewEmployee(Employee employee) {
+        employee.setPublicId(UUID.randomUUID());
         employee.setCreatedAt(OffsetDateTime.now());
         employee.setCreatedBy(UUID.randomUUID()); // TODO to be changed with user publicId
         EmployeeEntity employeeEntity = employeeRepository.save(employeeMapper.employeeToEmployeeEntity(employee));

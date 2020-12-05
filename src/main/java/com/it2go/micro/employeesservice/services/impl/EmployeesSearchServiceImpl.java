@@ -15,6 +15,8 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CompoundSelection;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -46,12 +48,13 @@ public class EmployeesSearchServiceImpl implements EmployeesSearchService {
             employeeRoot.get(EmployeeEntity_.salary),
             employeeRoot.get(EmployeeEntity_.traveling),
             employeeRoot.get(EmployeeEntity_.weekendWork),
-            employeeRoot.get(EmployeeEntity_.createdAt),
-            employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.STREET_ONE),
+            employeeRoot.get(EmployeeEntity_.createdAt));
+
+/*            employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.STREET_ONE),
             employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.BUILDING_NR),
             employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.CITY),
             employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.ZIP_CODE),
-            employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.COUNTRY_CODE));
+            employeeRoot.get(EmployeeEntity_.ADDRESS).get(AddressEntity_.COUNTRY_CODE));*/
 
     final CriteriaQuery<EmployeeTableItem> select = criteriaQuery.select(compoundSelection);
 
