@@ -15,12 +15,9 @@ import java.util.UUID;
 public class Employee {
 
     // to get this object from any database relational or NoSQl, use this key in the queries
-    @NotNull
     private UUID publicId;
-    @NotNull
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
-    @NotNull
     private UUID createdBy;
     private UUID updatedBy;
 
