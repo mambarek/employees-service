@@ -8,12 +8,14 @@ import com.it2go.micro.employeesservice.services.EmployeesService;
 import com.it2go.micro.employeesservice.services.EntityNotFoundException;
 import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmployeesServiceImpl implements EmployeesService {
@@ -41,10 +43,18 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee saveNewEmployee(Employee employee) {
+        // publicId may be requested from another service e.g. PublicIdService.getNewPublicId(entityClass)
         employee.setPublicId(UUID.randomUUID());
         employee.setCreatedAt(OffsetDateTime.now());
         employee.setCreatedBy(UUID.randomUUID()); // TODO to be changed with user publicId
+
+        if(employee.getData().getAddress() != null){
+            employee.getData().getAddress().setPublicId(UUID.randomUUID());
+        }
+
+        log.info(String.format("-- saveNewEmployee publicId: [%s]", employee.getPublicId()));
         EmployeeEntity employeeEntity = employeeRepository.save(employeeMapper.employeeToEmployeeEntity(employee));
+        log.info(String.format("-- saveNewEmployee [%s] successfully created", employee.getPublicId()));
 
         return employeeMapper.employeeEntityToEmployee(employeeEntity);
     }
