@@ -1,8 +1,7 @@
 package com.it2go.micro.employeesservice.services.jms;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.it2go.micro.projectservice.domain.Project;
+import com.it2go.micro.projectmanagement.domain.Project;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Component
 @RequiredArgsConstructor
@@ -22,13 +20,14 @@ public class ProjectEventListener {
   private final JmsTemplate jmsTemplate;
   private final ObjectMapper objectMapper;
 
-  //@JmsListener(destination = "NEW_PROJECTS_QUEUE")
-  public void listenToNewProjects(String project) {
+  @JmsListener(destination = "NEW_PROJECTS_QUEUE")
+  public void listenToNewProjects(Project project) {
     log.info(String.format("-- listenToNewProjects() %s", project));
+    System.out.println(String.format("-- listenToNewProjects() %s", project));
     //this.getProjectByPublicId(project);
   }
 
-  //@JmsListener(destination = "PROJECTS_CHANGED_QUEUE")
+  @JmsListener(destination = "PROJECTS_CHANGED_QUEUE")
   public void listenToChangedProjects(String project) {
     log.info(String.format("-- listenToChangedProjects() %s", project));
   }

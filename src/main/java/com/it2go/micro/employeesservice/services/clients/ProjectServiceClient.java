@@ -1,6 +1,6 @@
 package com.it2go.micro.employeesservice.services.clients;
 
-import com.it2go.micro.projectservice.domain.SearchResultProjectTableItem;
+import com.it2go.micro.projectmanagement.domain.SearchResultProjectTableItem;
 import com.it2go.util.jpa.search.SearchTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

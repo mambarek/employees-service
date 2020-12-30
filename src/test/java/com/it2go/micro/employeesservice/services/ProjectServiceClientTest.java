@@ -1,7 +1,7 @@
 package com.it2go.micro.employeesservice.services;
 
 import com.it2go.micro.employeesservice.services.clients.ProjectServiceClient;
-import com.it2go.micro.projectservice.domain.SearchResultProjectTableItem;
+import com.it2go.micro.projectmanagement.domain.SearchResultProjectTableItem;
 import com.it2go.util.jpa.search.Group;
 import com.it2go.util.jpa.search.Operation;
 import com.it2go.util.jpa.search.Rule;

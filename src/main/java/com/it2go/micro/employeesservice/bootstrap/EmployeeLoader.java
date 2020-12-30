@@ -1,19 +1,20 @@
 package com.it2go.micro.employeesservice.bootstrap;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.it2go.micro.employeesservice.domian.Address;
 import com.it2go.micro.employeesservice.domian.Document;
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.domian.PersonData;
 import com.it2go.micro.employeesservice.mapper.EmployeeMapper;
 import com.it2go.micro.employeesservice.masterdata.Gender;
-import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity;
-import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
-import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
 import com.it2go.micro.employeesservice.services.EmployeesService;
+import com.it2go.micro.employeesservice.services.ProjectService;
+import com.it2go.micro.projectmanagement.domain.ProjectExportEvent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -24,8 +25,11 @@ import java.util.UUID;
 @Component
 public class EmployeeLoader implements CommandLineRunner {
 
+    private final JmsTemplate jmsTemplate;
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final ProjectService projectService;
+    private final ObjectMapper objectMapper;
 
     private final EmployeesService employeesService;
 
@@ -35,6 +39,7 @@ public class EmployeeLoader implements CommandLineRunner {
         employeesService.saveNewEmployee(createEmployee2());
         employeesService.saveNewEmployee(createEmployee3());
         employeesService.saveNewEmployee(createEmployee4());
+        this.importProjects();
         //System.out.println(employee);
     }
 
@@ -212,5 +217,23 @@ public class EmployeeLoader implements CommandLineRunner {
         employee.getDocuments().add(doc2);
 
         return employee;
+    }
+
+    public void importProjects(){
+        jmsTemplate.convertAndSend("PROJECT_IMPOR_QUEUE", "");
+        String projectExportEventJson = (String) jmsTemplate.receiveAndConvert("PROJECT_EXPORT_QUEUE");
+        System.out.println("-- All Projects");
+        System.out.println(projectExportEventJson);
+        if(projectExportEventJson == null) return;
+
+        System.out.println("-- Project import save all projects!");
+        try {
+            ProjectExportEvent projectExportEvent = objectMapper
+                .readValue(projectExportEventJson, ProjectExportEvent.class);
+            projectExportEvent.getProjects().forEach(projectService::saveProject);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
     }
 }

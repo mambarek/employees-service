@@ -112,7 +112,7 @@
                             </inputSpec>
 -->
                             <generatorName>spring</generatorName>
-                            <modelPackage>com.it2go.micro.projectservice.domain</modelPackage>
+                            <modelPackage>com.it2go.micro.projectmanagement.domain</modelPackage>
                             <skipValidateSpec>true</skipValidateSpec>
                             <withXml>true</withXml>
                             <generateSupportingFiles>false</generateSupportingFiles>
