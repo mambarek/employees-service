@@ -1,6 +1,8 @@
 package com.it2go.micro.employeesservice.services.jms;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.it2go.micro.employeesservice.persistence.jpa.repositories.ProjectRepository;
+import com.it2go.micro.employeesservice.services.ProjectService;
 import com.it2go.micro.projectmanagement.domain.Project;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -19,17 +21,19 @@ public class ProjectEventListener {
 
   private final JmsTemplate jmsTemplate;
   private final ObjectMapper objectMapper;
+  private final ProjectService projectService;
 
   @JmsListener(destination = "NEW_PROJECTS_QUEUE")
   public void listenToNewProjects(Project project) {
     log.info(String.format("-- listenToNewProjects() %s", project));
     System.out.println(String.format("-- listenToNewProjects() %s", project));
-    //this.getProjectByPublicId(project);
+    projectService.saveProject(project);
   }
 
   @JmsListener(destination = "PROJECTS_CHANGED_QUEUE")
-  public void listenToChangedProjects(String project) {
+  public void listenToChangedProjects(Project project) {
     log.info(String.format("-- listenToChangedProjects() %s", project));
+    projectService.updateProject(project);
   }
 
   /*
