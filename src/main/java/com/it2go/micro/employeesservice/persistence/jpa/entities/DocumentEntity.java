@@ -20,8 +20,9 @@ import java.util.UUID;
 public class DocumentEntity implements Serializable {
 
     @Id
-    @GeneratedValue
-    @Column(name = "ID", unique = true, nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "document_seq_gen")
+    @SequenceGenerator(name = "document_seq_gen", sequenceName = "document_seq", allocationSize = 50)
+    @Column(name = "ID", updatable = false, nullable = false)
     private Long id;
 
     @Column(name = "PUBLIC_ID", unique = true, nullable = false, updatable = false)

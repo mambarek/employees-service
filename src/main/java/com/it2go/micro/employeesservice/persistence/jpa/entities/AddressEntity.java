@@ -19,8 +19,9 @@ import java.util.UUID;
 public class AddressEntity implements Serializable {
 
     @Id
-    @GeneratedValue
-    @Column(name = "ID", unique = true, nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq_gen")
+    @SequenceGenerator(name = "address_seq_gen", sequenceName = "address_seq", allocationSize = 50)
+    @Column(name = "ID", updatable = false, nullable = false)
     private Long id;
 
     @Column(name = "PUBLIC_ID", unique = true, nullable = false, updatable = false)

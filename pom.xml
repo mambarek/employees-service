@@ -83,7 +83,7 @@
                                     <version>${project-api.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
-                                    <includes>**/project-api.yaml</includes>
+                                    <includes>**/projects-api.yaml</includes>
                                 </artifactItem>
                             </artifactItems>
                             <overWriteSnapshots>true</overWriteSnapshots>
@@ -104,7 +104,7 @@
                         </goals>
                         <configuration>
                             <!-- Generate stubs from maven repo-->
-                            <inputSpec>${project-api-definition-basedir}/project-api.yaml</inputSpec>
+                            <inputSpec>${project-api-definition-basedir}/projects-api.yaml</inputSpec>
                             <!-- Generate stubs from local file -->
 <!--
                             <inputSpec>

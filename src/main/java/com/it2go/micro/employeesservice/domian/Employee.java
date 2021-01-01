@@ -1,5 +1,6 @@
 package com.it2go.micro.employeesservice.domian;
 
+import com.it2go.micro.projectmanagement.domain.Project;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -29,6 +30,6 @@ public class Employee {
     private boolean traveling;
 
     private List<Document> documents = new ArrayList<>();
-    private List<UUID> assignedProjects = new ArrayList<>();
+    private List<Project> assignedProjects = new ArrayList<>();
 
 }

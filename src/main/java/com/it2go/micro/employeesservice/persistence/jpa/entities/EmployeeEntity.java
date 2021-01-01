@@ -1,5 +1,6 @@
 package com.it2go.micro.employeesservice.persistence.jpa.entities;
 
+import com.it2go.micro.projectmanagement.domain.Project;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,8 +22,9 @@ import java.util.UUID;
 public class EmployeeEntity implements Serializable {
 
     @Id
-    @GeneratedValue
-    @Column(name = "ID", unique = true, nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_seq_gen")
+    @SequenceGenerator(name = "employee_seq_gen", sequenceName = "employee_seq", allocationSize = 50)
+    @Column(name = "ID", updatable = false, nullable = false)
     private Long id;
 
     @Column(name = "PUBLIC_ID", unique = true, nullable = false, updatable = false)
@@ -87,4 +89,12 @@ public class EmployeeEntity implements Serializable {
         if(this.getDocuments() == null) this.documents = new ArrayList<>();
         this.documents.add(documentEntity);
     }
+
+    @OneToMany
+    @JoinTable(
+        name="EMPLOYEE_PROJECTS",
+        joinColumns = @JoinColumn( name="EMPLOYEE_PUB_ID", referencedColumnName = "PUBLIC_ID"),
+        inverseJoinColumns = @JoinColumn( name="PROJECT_PUB_ID", referencedColumnName = "PUBLIC_ID")
+    )
+    private List<ProjectEntity> assignedProjects = new ArrayList<>();
 }
