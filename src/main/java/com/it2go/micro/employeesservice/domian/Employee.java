@@ -29,4 +29,6 @@ public class Employee {
     private boolean traveling;
 
     private List<Document> documents = new ArrayList<>();
+    private List<UUID> assignedProjects = new ArrayList<>();
+
 }
