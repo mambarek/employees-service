@@ -129,7 +129,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchTemplate'
+              # relative paths not working. paths must be absolute because the parsing is evaluated on the client
+              $ref: 'https://raw.githubusercontent.com/mambarek/apis-definitions-repo/master/definitions/commons/v1/shared-objects-schema.yaml#/components/schemas/SearchTemplate'
         required: true
       responses:
         "200":
@@ -138,45 +139,19 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/EmployeeTableItemList'
+
+  /api/v1/employees/jms:
+    get:
+      summary: This is a dummy API its used only to generate JMS artifacts on the client side
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EmployeeExportEvent'
 components:
   schemas:
-    Address:
-      required:
-      - buildingNr
-      - city
-      - countryCode
-      - publicId
-      - streetOne
-      - zipCode
-      type: object
-      properties:
-        publicId:
-          type: string
-          format: uuid
-        streetOne:
-          maxLength: 100
-          minLength: 3
-          type: string
-        buildingNr:
-          maxLength: 5
-          minLength: 1
-          type: string
-        streetTwo:
-          maxLength: 100
-          minLength: 3
-          type: string
-        zipCode:
-          maxLength: 10
-          minLength: 5
-          type: string
-        city:
-          maxLength: 100
-          minLength: 3
-          type: string
-        countryCode:
-          maxLength: 3
-          minLength: 2
-          type: string
     Document:
       required:
       - contentType
@@ -223,7 +198,7 @@ components:
           type: string
           format: uuid
         data:
-          $ref: '#/components/schemas/PersonData'
+          $ref: 'https://raw.githubusercontent.com/mambarek/apis-definitions-repo/master/definitions/commons/v1/master-data-schema.yaml#/components/schemas/PersonData'
         salary:
           type: number
           format: double
@@ -235,100 +210,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Document'
-    PersonData:
-      required:
-      - birthDate
-      - email
-      - firstName
-      - gender
-      - lastName
-      type: object
-      properties:
-        firstName:
-          maxLength: 100
-          minLength: 3
-          type: string
-        lastName:
-          maxLength: 100
-          minLength: 3
-          type: string
-        birthDate:
-          type: string
-          format: date
-        gender:
-          type: string
-          enum:
-          - MALE
-          - FEMALE
-        email:
-          type: string
-        address:
-          $ref: '#/components/schemas/Address'
-    Group:
-      type: object
-      properties:
-        groupOp:
-          type: string
-          enum:
-          - AND
-          - OR
-        rules:
+        assignedProjects:
           type: array
           items:
-            $ref: '#/components/schemas/Rule'
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/Group'
-    Rule:
-      type: object
-      properties:
-        field:
-          type: string
-        op:
-          type: string
-          enum:
-          - EQUAL
-          - NOT_EQUAL
-          - LESS
-          - LESS_OR_EQUAL
-          - GREATER
-          - GREATER_OR_EQUAL
-          - BEGINS_WITH
-          - NOT_BEGIN_WITH
-          - IN
-          - NOT_IN
-          - ENDS_WITH
-          - NOT_ENDS_WITH
-          - CONTAINS
-          - NOT_CONTAINS
-          - "NULL"
-          - NOT_NULL
-          - BETWEEN
-        data:
-          type: string
-        type:
-          type: string
-          enum:
-          - STRING
-          - NUMBER
-          - DATE
-          - TIMESTAMP
-    SearchTemplate:
-      type: object
-      properties:
-        orderBy:
-          type: string
-        orderDirection:
-          type: string
-        maxResult:
-          type: integer
-          format: int32
-        offset:
-          type: integer
-          format: int32
-        filters:
-          $ref: '#/components/schemas/Group'
+            type: string
+            format: uuid
+
     EmployeeTableItem:
       type: object
       properties:
@@ -369,3 +256,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EmployeeTableItem'
+
+    EmployeeExportEvent:
+      type: object
+      properties:
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Employee'

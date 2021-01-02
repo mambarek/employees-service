@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class ProjectEventListener {
 
   private final JmsTemplate jmsTemplate;
-  private final ObjectMapper objectMapper;
   private final ProjectService projectService;
 
   @JmsListener(destination = "NEW_PROJECTS_QUEUE")

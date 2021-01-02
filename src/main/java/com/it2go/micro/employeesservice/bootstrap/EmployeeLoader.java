@@ -39,8 +39,7 @@ public class EmployeeLoader implements CommandLineRunner {
         employeesService.saveNewEmployee(createEmployee2());
         employeesService.saveNewEmployee(createEmployee3());
         employeesService.saveNewEmployee(createEmployee4());
-        this.importProjects();
-        //System.out.println(employee);
+        importProjects();
     }
 
     public static Employee createEmployee(){
@@ -220,7 +219,7 @@ public class EmployeeLoader implements CommandLineRunner {
     }
 
     public void importProjects(){
-        jmsTemplate.convertAndSend("PROJECT_IMPOR_QUEUE", "");
+        jmsTemplate.convertAndSend("PROJECT_IMPORT_QUEUE", "");
         String projectExportEventJson = (String) jmsTemplate.receiveAndConvert("PROJECT_EXPORT_QUEUE");
         System.out.println("-- All Projects");
         System.out.println(projectExportEventJson);
