@@ -1,6 +1,7 @@
 package com.it2go.micro.employeesservice.persistence.jpa.repositories;
 
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
+import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

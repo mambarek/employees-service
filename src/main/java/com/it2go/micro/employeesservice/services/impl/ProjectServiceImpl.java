@@ -1,7 +1,9 @@
 package com.it2go.micro.employeesservice.services.impl;
 
 import com.it2go.micro.employeesservice.mapper.ProjectMapper;
+import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.ProjectEntity;
+import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
 import com.it2go.micro.employeesservice.persistence.jpa.repositories.ProjectRepository;
 import com.it2go.micro.employeesservice.services.EntityNotFoundException;
 import com.it2go.micro.employeesservice.services.ProjectService;
@@ -24,6 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
 
   private final ProjectRepository projectRepository;
   private final ProjectMapper projectMapper;
+  private final EmployeeRepository employeeRepository;
 
   @Override
   public Project findByPublicId(String publicId) {
@@ -35,6 +38,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     return project;
   }
+
 
   @Override
   public Project findByPublicId(UUID publicId) {
@@ -50,6 +54,19 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   public Project saveProject(Project project){
     ProjectEntity projectEntity = projectMapper.projectToProjectEntity(project);
+
+    List<EmployeeEntity> employeeEntities = new ArrayList<>();
+    if(project.getAssignedEmployees() != null) {
+      project.getAssignedEmployees().forEach(employee -> {
+        EmployeeEntity byPublicId = employeeRepository
+            .findByPublicId(employee.getPublicId()).orElseThrow(EntityNotFoundException::new);
+
+        employeeEntities.add(byPublicId);
+      });
+    }
+
+    projectEntity.setAssignedEmployees(employeeEntities);
+
     ProjectEntity savedEntity = projectRepository.save(projectEntity);
 
     return projectMapper.projectEntityToProject(savedEntity);
@@ -57,10 +74,22 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   public Project updateProject(Project project){
-    ProjectEntity byPublicId = projectRepository.findByPublicId(project.getPublicId()).orElseThrow(
+    ProjectEntity projectEntityByPublicId = projectRepository.findByPublicId(project.getPublicId()).orElseThrow(
         EntityNotFoundException::new);
 
-    ProjectEntity projectEntity = projectMapper.updateProject(byPublicId, project);
+    List<EmployeeEntity> employeeEntities = new ArrayList<>();
+    if(project.getAssignedEmployees() != null) {
+      project.getAssignedEmployees().forEach(employee -> {
+        EmployeeEntity byPublicId = employeeRepository
+            .findByPublicId(employee.getPublicId()).orElseThrow(EntityNotFoundException::new);
+
+        employeeEntities.add(byPublicId);
+      });
+    }
+
+    projectEntityByPublicId.setAssignedEmployees(employeeEntities);
+    ProjectEntity projectEntity = projectMapper.updateProject(projectEntityByPublicId, project);
+
 
     ProjectEntity savedEntity = projectRepository.save(projectEntity);
 

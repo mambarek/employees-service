@@ -90,11 +90,12 @@ public class EmployeeEntity implements Serializable {
         this.documents.add(documentEntity);
     }
 
-    @OneToMany
+/*    @ManyToMany
     @JoinTable(
-        name="EMPLOYEE_PROJECTS",
+        name="PROJECT_EMPLOYEES",
         joinColumns = @JoinColumn( name="EMPLOYEE_PUB_ID", referencedColumnName = "PUBLIC_ID"),
         inverseJoinColumns = @JoinColumn( name="PROJECT_PUB_ID", referencedColumnName = "PUBLIC_ID")
-    )
+    )*/
+    @ManyToMany(mappedBy = "assignedEmployees")
     private List<ProjectEntity> assignedProjects = new ArrayList<>();
 }

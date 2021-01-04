@@ -4,7 +4,6 @@ import com.it2go.micro.employeesservice.domian.Document;
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.DocumentEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,11 +23,14 @@ public interface EmployeeMapper{
     @Mapping(source = "gender", target = "data.gender")
     @Mapping(source = "email", target = "data.email")
     @Mapping(source = "address", target = "data.address")
+    @Mapping(source = "assignedProjects", target = "assignedProjects", ignore = true)
     Employee employeeEntityToEmployee(EmployeeEntity employeeEntity);
 
     @InheritInverseConfiguration(name = "employeeEntityToEmployee")
+    @Mapping(source = "assignedProjects", target = "assignedProjects", ignore = true)
     EmployeeEntity simpleEmployeeToEmployeeEntity(Employee employee);
 
+    @Mapping(source = "assignedProjects", target = "assignedProjects", ignore = true)
     default EmployeeEntity employeeToEmployeeEntity(Employee employee){
         EmployeeEntity employeeEntity = this.simpleEmployeeToEmployeeEntity(employee);
         employeeEntity.getDocuments().forEach(documentEntity -> documentEntity.setOwner(employeeEntity));
@@ -46,6 +48,7 @@ public interface EmployeeMapper{
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "updatedBy", ignore = true)
+    @Mapping(source = "assignedProjects", target = "assignedProjects", ignore = true)
     EmployeeEntity simpleUpdateEmployee(@MappingTarget EmployeeEntity employeeEntity, Employee employee);
 
     default EmployeeEntity updateEmployeeEntity(@MappingTarget EmployeeEntity employeeEntity, Employee employee){

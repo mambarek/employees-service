@@ -39,7 +39,8 @@ public class EmployeeLoader implements CommandLineRunner {
         employeesService.saveNewEmployee(createEmployee2());
         employeesService.saveNewEmployee(createEmployee3());
         employeesService.saveNewEmployee(createEmployee4());
-        importProjects();
+        // disable import
+        //importProjects();
     }
 
     public static Employee createEmployee(){

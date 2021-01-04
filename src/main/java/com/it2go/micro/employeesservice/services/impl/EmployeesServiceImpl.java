@@ -2,10 +2,12 @@ package com.it2go.micro.employeesservice.services.impl;
 
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.mapper.EmployeeMapper;
+import com.it2go.micro.employeesservice.mapper.ProjectMapper;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
 import com.it2go.micro.employeesservice.services.EmployeesService;
 import com.it2go.micro.employeesservice.services.EntityNotFoundException;
+import com.it2go.micro.projectmanagement.domain.Project;
 import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     private final EmployeeMapper employeeMapper;
     private final EmployeeRepository employeeRepository;
+    private final ProjectMapper projectMapper;
 
     @Override
     public List<Employee> findAllEmployees() {
@@ -37,8 +40,19 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee findEmployeeByPublicId(UUID publicId){
-        EmployeeEntity employeeEntity = employeeRepository.findByPublicId(publicId).orElse(null);
-        return employeeMapper.employeeEntityToEmployee(employeeEntity);
+        EmployeeEntity employeeEntity = employeeRepository.findByPublicId(publicId).orElseThrow(EntityNotFoundException::new);
+        List<Project> projects = new ArrayList<>();
+        if(employeeEntity.getAssignedProjects() != null) {
+            employeeEntity.getAssignedProjects().forEach(projectEntity -> {
+                Project project = projectMapper.projectEntityToProject(projectEntity);
+                projects.add(project);
+            });
+        }
+
+        Employee employee = employeeMapper.employeeEntityToEmployee(employeeEntity);
+        employee.setAssignedProjects(projects);
+
+        return employee;
     }
 
     @Override
