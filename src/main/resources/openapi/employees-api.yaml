@@ -59,7 +59,7 @@ paths:
     put:
       tags:
       - employees-controller
-      operationId: updateEmploy
+      operationId: updateEmployee
       parameters:
       - name: publicId
         in: path
