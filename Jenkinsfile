@@ -60,6 +60,30 @@ node {
             }
         }
 
+        stage('Docker_build') {
+            echo "Docker build employees-service image..."
+            withMaven(jdk: javaVersion, maven: mavenVersion) {
+                try{
+                    runCommand('mvn docker:build')
+                } catch(exception){
+                    sendErrorMail("Error occurred while building docker image, error: " + exception.message)
+                    warnError(exception.message)
+                }
+            }
+        }
+
+        stage('Docker_push') {
+            echo "Docker push employees-service image..."
+            withMaven(jdk: javaVersion, maven: mavenVersion) {
+                try{
+                    runCommand('mvn docker:push')
+                } catch(exception){
+                    sendErrorMail("Error occurred while pushing docker image, error: " + exception.message)
+                    warnError(exception.message)
+                }
+            }
+        }
+
         stage('Notify'){
             echo "Notify contributors ..."
             sendSuccessMail()

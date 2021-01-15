@@ -17,7 +17,7 @@
         <external-openapi-definitions-basedir>${project.build.directory}/openapi-definitions</external-openapi-definitions-basedir>
         <project-api-definition-basedir>${external-openapi-definitions-basedir}/project-api/BOOT-INF/classes</project-api-definition-basedir>
 
-        <docker-maven-plugin>0.34.1</docker-maven-plugin>
+        <fabric8-docker-maven-plugin>0.34.1</fabric8-docker-maven-plugin>
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
         <docker.source.directory>docker</docker.source.directory>
         <docker.dockerfile>Dockerfile</docker.dockerfile>
@@ -133,7 +133,7 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>${docker-maven-plugin}</version>
+                <version>${fabric8-docker-maven-plugin}</version>
                 <configuration>
                     <verbose>true</verbose>
                     <images>

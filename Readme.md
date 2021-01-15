@@ -57,3 +57,12 @@ ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
 #### Rund docker image
 >docker run -it p8010:8010 employee-service-example
 
+## Docker build with fabric8
+Docker image would be created and pushed by maven at install phase see pom.xml
+> mvn install
+
+or use docker:build, docker:push
+> mvn docker:build docker:push
+
+or use Jenkins. In jenkinsfile (Pipeline) we call the two goals
+
