@@ -11,8 +11,12 @@ import com.it2go.micro.employeesservice.masterdata.Gender;
 import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
 import com.it2go.micro.employeesservice.services.EmployeesService;
 import com.it2go.micro.employeesservice.services.ProjectService;
+import com.it2go.micro.employeesservice.services.jms.JmsService;
+import com.it2go.micro.employeesservice.services.jms.SendMessageException;
 import com.it2go.micro.projectmanagement.domain.ProjectExportEvent;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
@@ -21,11 +25,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class EmployeeLoader implements CommandLineRunner {
 
-    private final JmsTemplate jmsTemplate;
+    private final JmsService jmsService;
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
     private final ProjectService projectService;
@@ -219,9 +224,15 @@ public class EmployeeLoader implements CommandLineRunner {
         return employee;
     }
 
-    public void importProjects(){
-        jmsTemplate.convertAndSend("PROJECT_IMPORT_QUEUE", "");
-        String projectExportEventJson = (String) jmsTemplate.receiveAndConvert("PROJECT_EXPORT_QUEUE");
+    public void importProjects() throws Exception {
+        jmsService.sendMessage("PROJECT_IMPORT_QUEUE", "");
+        log.info("Waiting for all ActiveMQ JMS Messages to be consumed");
+        TimeUnit.SECONDS.sleep(3);
+        System.exit(-1);
+
+        Object message = jmsService.receiveMessage("PROJECT_EXPORT_QUEUE");
+
+        String projectExportEventJson = (String) message;
         System.out.println("-- All Projects");
         System.out.println(projectExportEventJson);
         if(projectExportEventJson == null) return;
