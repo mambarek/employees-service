@@ -1,24 +1,14 @@
 package com.it2go.micro.employeesservice.bootstrap;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.it2go.micro.employeesservice.domian.Address;
 import com.it2go.micro.employeesservice.domian.Document;
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.domian.PersonData;
-import com.it2go.micro.employeesservice.mapper.EmployeeMapper;
 import com.it2go.micro.employeesservice.masterdata.Gender;
-import com.it2go.micro.employeesservice.persistence.jpa.repositories.EmployeeRepository;
 import com.it2go.micro.employeesservice.services.EmployeesService;
-import com.it2go.micro.employeesservice.services.ProjectService;
-import com.it2go.micro.employeesservice.services.jms.JmsService;
-import com.it2go.micro.employeesservice.services.jms.SendMessageException;
-import com.it2go.micro.projectmanagement.domain.ProjectExportEvent;
-import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -30,11 +20,9 @@ import java.util.UUID;
 @Component
 public class EmployeeLoader implements CommandLineRunner {
 
-    private final JmsService jmsService;
-    private final EmployeeRepository employeeRepository;
-    private final EmployeeMapper employeeMapper;
+/*    private final JmsService jmsService;
     private final ProjectService projectService;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;*/
 
     private final EmployeesService employeesService;
 
@@ -224,7 +212,7 @@ public class EmployeeLoader implements CommandLineRunner {
         return employee;
     }
 
-    public void importProjects() throws Exception {
+/*    public void importProjects() throws Exception {
         jmsService.sendMessage("PROJECT_IMPORT_QUEUE", "");
         log.info("Waiting for all ActiveMQ JMS Messages to be consumed");
         TimeUnit.SECONDS.sleep(3);
@@ -246,5 +234,5 @@ public class EmployeeLoader implements CommandLineRunner {
             e.printStackTrace();
         }
 
-    }
+    }*/
 }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.it2go.micro</groupId>
         <artifactId>microservices-bom</artifactId>
-        <version>2.1.0</version>
+        <version>2.1.1</version>
     </parent>
     <artifactId>employees-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -109,12 +109,6 @@
                         <configuration>
                             <!-- Generate stubs from maven repo-->
                             <inputSpec>${project-api-definition-basedir}/projects-api.yaml</inputSpec>
-                            <!-- Generate stubs from local file -->
-<!--
-                            <inputSpec>
-                                ${project.basedir}/src/main/resources/project-api.yaml
-                            </inputSpec>
--->
                             <generatorName>spring</generatorName>
                             <modelPackage>com.it2go.micro.projectmanagement.domain</modelPackage>
                             <skipValidateSpec>true</skipValidateSpec>
@@ -124,6 +118,9 @@
                             <generateApiDocumentation>false</generateApiDocumentation>
                             <generateModelDocumentation>true</generateModelDocumentation>
                             <verbose>false</verbose>
+                            <configOptions>
+                                <serializableModel>true</serializableModel>
+                            </configOptions>
                         </configuration>
                     </execution>
                 </executions>
