@@ -1,29 +1,32 @@
-package com.it2go.micro.employeesservice.services.jms;
+package com.it2go.micro.employeesservice.services.amqp;
 
 import com.it2go.micro.employeesservice.services.messagin.MessageService;
 import com.it2go.micro.employeesservice.services.messagin.ReceiveMessageException;
 import com.it2go.micro.employeesservice.services.messagin.SendMessageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Profile;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * created by mmbarek on 18.01.2021.
+ * created by mmbarek on 24.01.2021.
  */
 @Slf4j
-@RequiredArgsConstructor
 @Component
-@Profile("jms")
-public class JmsService implements MessageService {
+@RequiredArgsConstructor
+@Profile("rabbit")
+public class AmqpService implements MessageService {
 
-  private final JmsTemplate jmsTemplate;
+  private final RabbitTemplate rabbitTemplate;
 
+  @Override
   public void sendMessage(String queueName, Object body) throws SendMessageException {
-    log.info("-- jms send message!");
+    log.info("-- amqp send message!");
     try {
-      jmsTemplate.convertAndSend(queueName, body);
+      rabbitTemplate.convertAndSend(queueName, body);
     }
     catch (Exception e){
       System.out.println(e.getMessage());
@@ -31,10 +34,11 @@ public class JmsService implements MessageService {
     }
   }
 
+  @Override
   public Object receiveMessage(String queueName) throws ReceiveMessageException {
-    log.info("-- jms receive message!");
+    log.info("-- amqp receive message!");
     try {
-      return jmsTemplate.receiveAndConvert(queueName);
+      return rabbitTemplate.receiveAndConvert(queueName);
     }catch (Exception e){
       System.out.println(e.getMessage());
       throw new ReceiveMessageException("Error occurred receiving message!");
