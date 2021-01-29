@@ -8,6 +8,7 @@ import com.it2go.micro.employeesservice.masterdata.Gender;
 import com.it2go.micro.employeesservice.services.EmployeesService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -26,8 +27,16 @@ public class EmployeeLoader implements CommandLineRunner {
 
     private final EmployeesService employeesService;
 
+    // test config server
+    @Value("${test.config.server.message}")
+    String message;
+
     @Override
     public void run(String... args) throws Exception {
+
+        // test the config server
+        System.out.println("-- Test the Config Server message: " + message);
+
         Employee employee = employeesService.saveNewEmployee(createEmployee());
         employeesService.saveNewEmployee(createEmployee2());
         employeesService.saveNewEmployee(createEmployee3());
