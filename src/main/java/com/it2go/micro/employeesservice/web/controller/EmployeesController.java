@@ -4,6 +4,9 @@ import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.services.EmployeesService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +23,14 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EmployeesController {
 
+  private final Environment env;
+
   private final EmployeesService employeesService;
+
+  @GetMapping("/message")
+  public String message(){
+    return env.getProperty("test.config.server.message");
+  }
 
   @PostMapping
   public ResponseEntity<Employee> saveNewEmployee(@RequestBody @Valid Employee employee) {
