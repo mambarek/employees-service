@@ -66,3 +66,6 @@ or use docker:build, docker:push
 
 or use Jenkins. In jenkinsfile (Pipeline) we call the two goals
 
+## Config Server
+in bootstrap-cloud.properties we define the server id from discovery server to connect to
+config server. The config is defined in project "cma-deploy" in subfolder "employees-service"
