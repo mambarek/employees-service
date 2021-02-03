@@ -3,16 +3,19 @@ package com.it2go.micro.employeesservice.persistence.jpa.entities;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.UUID;
+import lombok.Setter;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Builder
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "ADDRESS")

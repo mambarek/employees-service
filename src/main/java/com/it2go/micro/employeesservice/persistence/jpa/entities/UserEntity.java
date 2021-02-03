@@ -2,13 +2,16 @@ package com.it2go.micro.employeesservice.persistence.jpa.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.UUID;
+import lombok.Setter;
 
 @SuppressWarnings("JpaDataSourceORMInspection")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

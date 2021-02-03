@@ -15,7 +15,8 @@ import java.util.UUID;
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Builder
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "EMPLOYEE")

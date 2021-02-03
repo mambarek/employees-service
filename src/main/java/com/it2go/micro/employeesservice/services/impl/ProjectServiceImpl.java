@@ -98,6 +98,7 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   public List<Project> findAll() {
+    log.info("-- findAll() Projects call");
     List<Project> result = new ArrayList<>();
     Iterable<ProjectEntity> all = projectRepository.findAll();
     all.forEach(projectEntity -> {

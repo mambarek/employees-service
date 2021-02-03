@@ -28,19 +28,21 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public List<Employee> findAllEmployees() {
+        log.info("--Employees#findAllEmployees");
         List<Employee> result = new ArrayList<>();
-        employeeRepository.findAll().forEach(
-            employeeEntity -> {
-                result.add(employeeMapper.employeeEntityToEmployee(employeeEntity));
-            }
-        );
 
+        employeeRepository.findAll().forEach(
+            employeeEntity -> result.add(employeeMapper.employeeEntityToEmployee(employeeEntity))
+        );
+        log.info(String.format("--Employees#findAllEmployees found %s", result.size()));
         return result;
     }
 
     @Override
     public Employee findEmployeeByPublicId(UUID publicId){
+        log.info(String.format("--findEmployeeByPublicId [%s]", publicId));
         EmployeeEntity employeeEntity = employeeRepository.findByPublicId(publicId).orElseThrow(EntityNotFoundException::new);
+        log.info("--findEmployeeByPublicId found " + employeeEntity);
         List<Project> projects = new ArrayList<>();
         if(employeeEntity.getAssignedProjects() != null) {
             employeeEntity.getAssignedProjects().forEach(projectEntity -> {
@@ -57,6 +59,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee saveNewEmployee(Employee employee) {
+        log.info("--saveNewEmployee " + employee);
         // publicId may be requested from another service e.g. PublicIdService.getNewPublicId(entityClass)
         employee.setPublicId(UUID.randomUUID());
         employee.setCreatedAt(OffsetDateTime.now());
@@ -75,6 +78,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee updateEmployee(Employee employee){
+        log.info("--updateNewEmployee " + employee);
         EmployeeEntity byPublicId = employeeRepository.findByPublicId(employee.getPublicId())
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -83,7 +87,7 @@ public class EmployeesServiceImpl implements EmployeesService {
         employeeEntity.setUpdatedBy(UUID.randomUUID()); // TODO to be changed with user publicId
 
         EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
-
+        log.info("--updateNewEmployee updated successful");
         return employeeMapper.employeeEntityToEmployee(savedEntity);
     }
 
