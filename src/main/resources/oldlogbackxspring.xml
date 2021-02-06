@@ -2,36 +2,51 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     ​
+    <property name="LOG_PATH" value="./logs" />
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
     <!-- Example for logging into the build folder of your project -->
     <!--    <property name="LOG_FILE" value="${BUILD_FOLDER:-build}/${springAppName}"/>​-->
+<!--    <appender name="SAVE-TO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
+        <file>${LOG_PATH}/log.log</file>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
+            </Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${LOG_PATH}/archived/log_%d{dd-MM-yyyy}.log
+            </fileNamePattern>
+            <maxHistory>10</maxHistory>
+            <totalSizeCap>100MB</totalSizeCap>
+        </rollingPolicy>
+
+    </appender>-->
     <!-- You can override this to have a custom pattern -->
     <property name="CONSOLE_LOG_PATTERN"
-      value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
 
+    <springProfile name="tracing">
     <!-- Appender to log to console in a JSON format -->
-    <appender name="jsonConsole" class="ch.qos.logback.core.ConsoleAppender">
+        <appender name="jsonConsole" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
                 <timestamp>
                     <timeZone>UTC</timeZone>
                 </timestamp>
-                <mdc>
-                    <excludeMdcKeyName>X-B3-TraceId</excludeMdcKeyName>
-                    <excludeMdcKeyName>X-B3-SpanId</excludeMdcKeyName>
-                    <excludeMdcKeyName>X-B3-ParentSpanId</excludeMdcKeyName>
-                </mdc>
-                <context/>
                 <version/>
                 <logLevel/>
                 <message/>
                 <loggerName/>
                 <threadName/>
+                <context/>
                 <stackTrace>
                     <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
-                        <maxDepthPerThrowable>30</maxDepthPerThrowable>
-                        <maxLength>2048</maxLength>
+                        <maxDepthPerThrowable>200</maxDepthPerThrowable>
+                        <maxLength>8048</maxLength>
                         <shortenedClassNameLength>20</shortenedClassNameLength>
                         <rootCauseFirst>true</rootCauseFirst>
                         <inlineHash>false</inlineHash>
@@ -64,34 +79,48 @@
                         <exclude>^java\.lang\.Thread\.run$</exclude>
                     </throwableConverter>
                 </stackTrace>
-                <!--                <pattern>
-                                    <omitEmptyFields>true</omitEmptyFields>
-                                    <pattern>
-                                        {
-                                            "trace": {
-                                                "trace_id": "%mdc{X-B3-TraceId}",
-                                                "span_id": "%mdc{X-B3-SpanId}",
-                                                "parent_span_id": "%mdc{X-B3-ParentSpanId}",
-                                                "exportable": "%mdc{X-Span-Export}"
-                                            }
-                                        }
-                                    </pattern>
-                                </pattern>
-                                <mdc>
-                                    <excludeMdcKeyName>traceId</excludeMdcKeyName>
-                                    <excludeMdcKeyName>spanId</excludeMdcKeyName>
-                                    <excludeMdcKeyName>parentId</excludeMdcKeyName>
-                                    <excludeMdcKeyName>spanExportable</excludeMdcKeyName>
-                                    <excludeMdcKeyName>X-B3-TraceId</excludeMdcKeyName>
-                                    <excludeMdcKeyName>X-B3-SpanId</excludeMdcKeyName>
-                                    <excludeMdcKeyName>X-B3-ParentSpanId</excludeMdcKeyName>
-                                    <excludeMdcKeyName>X-Span-Export</excludeMdcKeyName>
-                                </mdc>-->
+                <pattern>
+                    <omitEmptyFields>true</omitEmptyFields>
+                    <pattern>
+                        {
+                        "trace": {
+                            "trace_id": "%mdc{X-B3-TraceId}",
+                            "span_id": "%mdc{X-B3-SpanId}",
+                            "parent_span_id": "%mdc{X-B3-ParentSpanId}",
+                            "exportable": "%mdc{X-Span-Export}"
+                            }
+                        }
+                    </pattern>
+                </pattern>
+                <mdc>
+                    <excludeMdcKeyName>traceId</excludeMdcKeyName>
+                    <excludeMdcKeyName>spanId</excludeMdcKeyName>
+                    <excludeMdcKeyName>parentId</excludeMdcKeyName>
+                    <excludeMdcKeyName>spanExportable</excludeMdcKeyName>
+                    <excludeMdcKeyName>X-B3-TraceId</excludeMdcKeyName>
+                    <excludeMdcKeyName>X-B3-SpanId</excludeMdcKeyName>
+                    <excludeMdcKeyName>X-B3-ParentSpanId</excludeMdcKeyName>
+                    <excludeMdcKeyName>X-Span-Export</excludeMdcKeyName>
+                </mdc>
             </providers>
         </encoder>
     </appender>
     ​
-    <root level="INFO">
-        <appender-ref ref="jsonConsole"/>
-    </root>
+        <root level="INFO">
+            <appender-ref ref="jsonConsole"/>
+            <!--<appender-ref ref="SAVE-TO-FILE"/>-->
+        </root>
+    </springProfile>
+    <springProfile name="default">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n
+                </pattern>
+            </encoder>
+        </appender>
+        <root level="info">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
 </configuration>
