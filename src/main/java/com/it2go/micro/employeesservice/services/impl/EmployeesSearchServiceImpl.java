@@ -1,6 +1,5 @@
 package com.it2go.micro.employeesservice.services.impl;
 
-import com.it2go.micro.employeesservice.persistence.jpa.entities.AddressEntity_;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity_;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItem;
@@ -15,8 +14,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CompoundSelection;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;

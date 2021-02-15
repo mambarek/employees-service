@@ -1,7 +1,6 @@
 package com.it2go.micro.employeesservice.web.controller;
 
 import com.it2go.micro.employeesservice.domian.Employee;
-import com.it2go.micro.employeesservice.search.table.EmployeeTableItem;
 import com.it2go.micro.employeesservice.search.table.EmployeeTableItemList;
 import com.it2go.micro.employeesservice.services.EmployeesSearchService;
 import com.it2go.micro.employeesservice.services.EmployeesService;

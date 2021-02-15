@@ -5,8 +5,6 @@ import com.it2go.micro.employeesservice.services.messagin.ReceiveMessageExceptio
 import com.it2go.micro.employeesservice.services.messagin.SendMessageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
