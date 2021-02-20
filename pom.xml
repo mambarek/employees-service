@@ -176,21 +176,4 @@
             </plugin>-->
         </plugins>
     </build>
-    <!-- For artifacts download -->
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>nexus-snapshot</id>
-            <url>http://localhost:9181/repository/nexus-snapshot/</url>
-        </repository>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>nexus-release</id>
-            <url>http://localhost:9181/repository/nexus-release/</url>
-        </repository>
-    </repositories>
 </project>
