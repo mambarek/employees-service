@@ -48,7 +48,7 @@ node {
             echo "Test  employees-service..."
             withMaven(jdk: javaVersion, maven: mavenVersion) {
                 try{
-                    runCommand('mvn clean verify')
+                    runCommand('mvn verify')
                 } catch(exception){
                     sendErrorMail("Error occurred while testing, error: " + exception.message)
                     warnError(exception.message)
