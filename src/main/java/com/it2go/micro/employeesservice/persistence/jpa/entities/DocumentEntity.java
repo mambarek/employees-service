@@ -28,7 +28,7 @@ public class DocumentEntity implements Serializable {
     @Column(name = "PUBLIC_ID", unique = true, nullable = false, updatable = false)
     private UUID publicId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "OWNER_ID", referencedColumnName = "PUBLIC_ID", nullable = false)
     @JsonIgnore
     private EmployeeEntity owner;

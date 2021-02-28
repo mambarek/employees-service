@@ -8,9 +8,9 @@ import java.util.UUID;
 public interface EmployeesService {
 
     List<Employee> findAllEmployees();
-    Employee findEmployeeByPublicId(UUID publicId);
+    Employee findEmployeeByPublicId(UUID publicId) throws EntityNotFoundException;
     Employee saveNewEmployee(Employee employee);
     Employee updateEmployee(Employee employee);
-    void deleteEmploy(UUID publicId);
+    void deleteEmployee(UUID publicId);
     Long countEmployees();
 }

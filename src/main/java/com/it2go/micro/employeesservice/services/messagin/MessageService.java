@@ -1,7 +1,5 @@
 package com.it2go.micro.employeesservice.services.messagin;
 
-import javax.jms.Message;
-
 /**
  * created by mmbarek on 24.01.2021.
  */

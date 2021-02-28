@@ -18,17 +18,23 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmployeesSearchServiceImpl implements EmployeesSearchService {
 
   final EntityManager entityManager;
-
+  public void test(){
+    System.out.println("-- test method called");
+    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+    assert cb != null;
+  }
   @Override
   public EmployeeTableItemList filterEmployees(SearchTemplate searchTemplate) {
-    System.out.println("Call of filterEmployees with template " + searchTemplate);
+    log.debug("Call of filterEmployees with template " + searchTemplate);
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 
     CriteriaQuery<EmployeeTableItem> criteriaQuery = cb.createQuery(EmployeeTableItem.class);

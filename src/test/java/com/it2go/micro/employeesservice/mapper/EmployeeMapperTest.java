@@ -3,18 +3,19 @@ package com.it2go.micro.employeesservice.mapper;
 import com.it2go.micro.employeesservice.domian.Employee;
 import com.it2go.micro.employeesservice.persistence.jpa.entities.EmployeeEntity;
 import com.it2go.micro.employeesservice.util.EmployeesProducer;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
+@DisplayName("Employee Mapper Test - ")
 class EmployeeMapperTest {
 
-    @Autowired
-    EmployeeMapper employeeMapper;
+    EmployeeMapper employeeMapper = new EmployeeMapperImpl();
 
     @Test
     void testEmployeeToEmployeeEntity(){

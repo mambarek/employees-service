@@ -21,10 +21,6 @@ import java.util.UUID;
 @Component
 public class EmployeeLoader implements CommandLineRunner {
 
-/*    private final JmsService jmsService;
-    private final ProjectService projectService;
-    private final ObjectMapper objectMapper;*/
-
     private final EmployeesService employeesService;
 
     // test config server

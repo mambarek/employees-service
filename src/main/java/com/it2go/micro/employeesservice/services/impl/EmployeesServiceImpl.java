@@ -9,6 +9,7 @@ import com.it2go.micro.employeesservice.services.EmployeesService;
 import com.it2go.micro.employeesservice.services.EntityNotFoundException;
 import com.it2go.micro.projectmanagement.domain.Project;
 import java.util.ArrayList;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,9 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public List<Employee> findAllEmployees() {
+
         log.info("--Employees#findAllEmployees");
+
         List<Employee> result = new ArrayList<>();
 
         employeeRepository.findAll().forEach(
@@ -39,10 +42,17 @@ public class EmployeesServiceImpl implements EmployeesService {
     }
 
     @Override
-    public Employee findEmployeeByPublicId(UUID publicId){
-        log.info(String.format("--findEmployeeByPublicId [%s]", publicId));
-        EmployeeEntity employeeEntity = employeeRepository.findByPublicId(publicId).orElseThrow(EntityNotFoundException::new);
-        log.info("--findEmployeeByPublicId found " + employeeEntity);
+    public Employee findEmployeeByPublicId(UUID publicId) throws EntityNotFoundException{
+
+        log.trace(String.format("--findEmployeeByPublicId [%s]", publicId));
+
+        EmployeeEntity employeeEntity = employeeRepository.findByPublicId(publicId).orElseThrow(
+            () -> {
+                log.warn(String.format("-- Employee with publicId [%s] not found", publicId));
+                throw new EntityNotFoundException();
+            }
+        );
+
         List<Project> projects = new ArrayList<>();
         if(employeeEntity.getAssignedProjects() != null) {
             employeeEntity.getAssignedProjects().forEach(projectEntity -> {
@@ -59,7 +69,9 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee saveNewEmployee(Employee employee) {
-        log.info("--saveNewEmployee " + employee);
+        log.trace("-- saveNewEmployee");
+        Objects.requireNonNull(employee, "Employee should not be Null!");
+        Objects.requireNonNull(employee.getData(), "Employee personal data should not be Null");
         // publicId may be requested from another service e.g. PublicIdService.getNewPublicId(entityClass)
         employee.setPublicId(UUID.randomUUID());
         employee.setCreatedAt(OffsetDateTime.now());
@@ -78,29 +90,48 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee updateEmployee(Employee employee){
-        log.info("--updateNewEmployee " + employee);
+        log.trace("-- updateEmployee");
+        Objects.requireNonNull(employee, "Employee should not be Null!");
+
+        log.info(String.format("-- updateEmployee update [%s]", employee.getPublicId()));
         EmployeeEntity byPublicId = employeeRepository.findByPublicId(employee.getPublicId())
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(
+                    () -> {
+                        log.warn(String.format("-- deleteEmployee: Employee with publicId [%s] not found",
+                            employee.getPublicId()));
+                        throw new EntityNotFoundException();
+                    }
+                );
 
         EmployeeEntity employeeEntity = employeeMapper.updateEmployeeEntity(byPublicId, employee);
         employeeEntity.setUpdatedAt(OffsetDateTime.now());
         employeeEntity.setUpdatedBy(UUID.randomUUID()); // TODO to be changed with user publicId
 
         EmployeeEntity savedEntity = employeeRepository.save(employeeEntity);
-        log.info("--updateNewEmployee updated successful");
+        log.info(String.format("-- updateNewEmployee [%s] updated successfully", employee.getPublicId()));
+
         return employeeMapper.employeeEntityToEmployee(savedEntity);
     }
 
     @Override
-    public void deleteEmploy(UUID publicId) {
-        EmployeeEntity byPublicId = employeeRepository.findByPublicId(publicId)
-            .orElseThrow(EntityNotFoundException::new);
+    public void deleteEmployee(UUID publicId) {
+        log.trace("-- deleteEmployee");
+        Objects.requireNonNull(publicId, "PublicId should not be Null!");
+
+        EmployeeEntity byPublicId = employeeRepository.findByPublicId(publicId).orElseThrow(
+            () -> {
+                log.warn(String.format("-- deleteEmployee: Employee with publicId [%s] not found", publicId));
+                throw new EntityNotFoundException();
+            }
+        );
 
         employeeRepository.delete(byPublicId);
+        log.info(String.format("-- deleteEmployee [%s] deleted successfully", publicId));
     }
 
     @Override
     public Long countEmployees() {
+        log.trace("-- countEmployees");
         return employeeRepository.count();
     }
 }

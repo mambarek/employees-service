@@ -1,6 +1,7 @@
 package com.it2go.micro.employeesservice.domian;
 
 import com.it2go.micro.projectmanagement.domain.Project;
+import javax.validation.Valid;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ public class Employee {
     private UUID updatedBy;
 
     @NotNull
+    @Valid
     private PersonData data;
 
     private Double salary;

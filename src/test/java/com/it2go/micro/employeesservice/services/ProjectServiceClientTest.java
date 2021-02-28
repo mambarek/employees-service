@@ -7,17 +7,18 @@ import com.it2go.util.jpa.search.Operation;
 import com.it2go.util.jpa.search.Rule;
 import com.it2go.util.jpa.search.RuleType;
 import com.it2go.util.jpa.search.SearchTemplate;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@Disabled
 class ProjectServiceClientTest {
 
-  @Autowired
+  //@Autowired
   ProjectServiceClient projectServiceClient;
 
-  @Test
+  //@Test
   void testSearch(){
     Rule rule = new Rule();
     rule.setField("name");

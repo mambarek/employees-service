@@ -1,6 +1,7 @@
 package com.it2go.micro.employeesservice.domian;
 
 import com.it2go.micro.employeesservice.masterdata.Gender;
+import javax.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -16,11 +17,11 @@ import java.time.LocalDate;
 @Builder
 public class PersonData {
 
-    @NotNull
+    @NotBlank
     @Size(min = 3, max = 100)
     private String firstName;
 
-    @NotNull
+    @NotBlank
     @Size(min = 3, max = 100)
     private String lastName;
 
@@ -30,7 +31,7 @@ public class PersonData {
     @NotNull
     private Gender gender;
 
-    @NotNull
+    @NotBlank
     @Email
     private String email;
 

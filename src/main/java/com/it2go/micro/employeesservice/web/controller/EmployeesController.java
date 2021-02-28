@@ -34,7 +34,7 @@ public class EmployeesController {
   }
 
   @PostMapping
-  public ResponseEntity<Employee> saveNewEmployee(@RequestBody @Valid Employee employee) {
+  public ResponseEntity<Employee> saveNewEmployee(@Valid @RequestBody Employee employee) {
     Employee savedEmployee = employeesService.saveNewEmployee(employee);
 
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{publicId}")
@@ -78,7 +78,7 @@ public class EmployeesController {
 
   @DeleteMapping("/{publicId}")
   public ResponseEntity<Void> deleteEmployee(@PathVariable @NotNull UUID publicId) {
-    employeesService.deleteEmploy(publicId);
+    employeesService.deleteEmployee(publicId);
     return ResponseEntity.noContent().build();
   }
 
