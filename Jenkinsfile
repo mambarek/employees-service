@@ -33,7 +33,7 @@ node {
          }
 
          stage('Build') {
-            echo "Build  employees-service..."
+            echo "Build employees-service..."
             withMaven(jdk: javaVersion, maven: mavenVersion) {
                 try{
                     runCommand('mvn clean package -DskipTests')
@@ -45,10 +45,10 @@ node {
          }
 
         stage('Test') {
-            echo "Test  employees-service..."
+            echo "Test employees-service..."
             withMaven(jdk: javaVersion, maven: mavenVersion) {
                 try{
-                    runCommand('mvn verify')
+                    runCommand('mvn verify jacoco:report')
                 } catch(exception){
                     sendErrorMail("Error occurred while testing, error: " + exception.message)
                     warnError(exception.message)
