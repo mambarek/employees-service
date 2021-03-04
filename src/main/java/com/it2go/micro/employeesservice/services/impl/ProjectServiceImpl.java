@@ -30,25 +30,21 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   public Project findByPublicId(String publicId) {
-    Project project = null;
-    Optional<ProjectEntity> byPublicId = projectRepository.findByPublicId(UUID.fromString(publicId));
-    if(byPublicId.isPresent()){
-      project = projectMapper.projectEntityToProject(byPublicId.get());
-    }
 
-    return project;
+    ProjectEntity byPublicId = projectRepository.findByPublicId(UUID.fromString(publicId)).orElseThrow(
+        () -> {
+          log.warn(String.format("-- Project with publicId [%s] not found", publicId));
+          throw new EntityNotFoundException();
+        }
+    );
+
+    return projectMapper.projectEntityToProject(byPublicId);
   }
-
 
   @Override
   public Project findByPublicId(UUID publicId) {
-    Project project = null;
-    Optional<ProjectEntity> byPublicId = projectRepository.findByPublicId(publicId);
-    if(byPublicId.isPresent()){
-      project = projectMapper.projectEntityToProject(byPublicId.get());
-    }
 
-    return project;
+    return findByPublicId(publicId.toString());
   }
 
   @Override
@@ -99,12 +95,6 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   public List<Project> findAll() {
     log.info("-- findAll() Projects call");
-    List<Project> result = new ArrayList<>();
-    Iterable<ProjectEntity> all = projectRepository.findAll();
-    all.forEach(projectEntity -> {
-      Project project = projectMapper.projectEntityToProject(projectEntity);
-      result.add(project);
-    });
-    return result;
+    return projectMapper.projectEntitiesToProjects(projectRepository.findAllProjects());
   }
 }

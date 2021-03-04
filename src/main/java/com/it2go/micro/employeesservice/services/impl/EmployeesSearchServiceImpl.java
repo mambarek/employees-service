@@ -27,11 +27,7 @@ import org.springframework.stereotype.Service;
 public class EmployeesSearchServiceImpl implements EmployeesSearchService {
 
   final EntityManager entityManager;
-  public void test(){
-    System.out.println("-- test method called");
-    CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-    assert cb != null;
-  }
+
   @Override
   public EmployeeTableItemList filterEmployees(SearchTemplate searchTemplate) {
     log.debug("Call of filterEmployees with template " + searchTemplate);

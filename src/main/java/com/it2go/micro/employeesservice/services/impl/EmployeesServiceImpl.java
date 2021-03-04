@@ -44,7 +44,7 @@ public class EmployeesServiceImpl implements EmployeesService {
     @Override
     public Employee findEmployeeByPublicId(UUID publicId) throws EntityNotFoundException{
 
-        log.trace(String.format("--findEmployeeByPublicId [%s]", publicId));
+        log.info(String.format("--findEmployeeByPublicId [%s]", publicId));
 
         EmployeeEntity employeeEntity = employeeRepository.findByPublicId(publicId).orElseThrow(
             () -> {
@@ -69,7 +69,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee saveNewEmployee(Employee employee) {
-        log.trace("-- saveNewEmployee");
+        log.info("-- saveNewEmployee");
         Objects.requireNonNull(employee, "Employee should not be Null!");
         Objects.requireNonNull(employee.getData(), "Employee personal data should not be Null");
         // publicId may be requested from another service e.g. PublicIdService.getNewPublicId(entityClass)
@@ -90,7 +90,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Employee updateEmployee(Employee employee){
-        log.trace("-- updateEmployee");
+        log.info("-- updateEmployee");
         Objects.requireNonNull(employee, "Employee should not be Null!");
 
         log.info(String.format("-- updateEmployee update [%s]", employee.getPublicId()));
@@ -115,7 +115,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public void deleteEmployee(UUID publicId) {
-        log.trace("-- deleteEmployee");
+        log.info("-- deleteEmployee");
         Objects.requireNonNull(publicId, "PublicId should not be Null!");
 
         EmployeeEntity byPublicId = employeeRepository.findByPublicId(publicId).orElseThrow(
@@ -131,7 +131,7 @@ public class EmployeesServiceImpl implements EmployeesService {
 
     @Override
     public Long countEmployees() {
-        log.trace("-- countEmployees");
+        log.info("-- countEmployees");
         return employeeRepository.count();
     }
 }
