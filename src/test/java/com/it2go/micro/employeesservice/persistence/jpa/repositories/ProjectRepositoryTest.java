@@ -28,8 +28,6 @@ class ProjectRepositoryTest {
   @Autowired
   ProjectRepository projectRepository;
 
-  ProjectMapper projectMapper = new ProjectMapperImpl();
-
   @Test
   void findByPublicId() {
     ProjectEntity p1 = new ProjectEntity();

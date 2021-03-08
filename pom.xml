@@ -22,6 +22,7 @@
         <docker.dockerfile>Dockerfile</docker.dockerfile>
         <docker.repository>mmbarek</docker.repository>
         <docker.image.name>${project.artifactId}</docker.image.name>
+        <jacoco.version>0.8.6</jacoco.version>
     </properties>
 
     <scm>
@@ -141,69 +142,11 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>${fabric8-docker-maven-plugin}</version>
-                <configuration>
-                    <verbose>true</verbose>
-                    <images>
-                        <image>
-                            <name>${docker.repository}/${docker.image.name}</name>
-                            <build>
-                                <contextDir>${project.basedir}</contextDir>
-                                <dockerFile>${docker.source.directory}/${docker.dockerfile}</dockerFile>
-                                <assembly>
-                                    <descriptorRef>artifact</descriptorRef>
-                                </assembly>
-                                <tags>
-                                    <tag>${project.version}</tag>
-                                </tags>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>build</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>push</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- dockerfile-maven-plugin not working if Dockerfile not in project root-->
-<!--            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>${dockerfile-maven-version}</version>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <repository>${docker.repository}/${docker.image.name}</repository>
-                    <tag>${project.version}</tag>
-                    <dockerfile>docker/Dockerfile</dockerfile>
-                </configuration>
-            </plugin>-->
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.6</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -221,4 +164,53 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${fabric8-docker-maven-plugin}</version>
+                        <configuration>
+                            <verbose>true</verbose>
+                            <images>
+                                <image>
+                                    <name>${docker.repository}/${docker.image.name}</name>
+                                    <build>
+                                        <contextDir>${project.basedir}</contextDir>
+                                        <dockerFile>${docker.source.directory}/${docker.dockerfile}</dockerFile>
+                                        <assembly>
+                                            <descriptorRef>artifact</descriptorRef>
+                                        </assembly>
+                                        <tags>
+                                            <tag>${project.version}</tag>
+                                        </tags>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>build</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>push</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
